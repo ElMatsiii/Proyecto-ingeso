@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon TCG Store</title>
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-bolt"></i> Pokemon TCG Store</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Inicio</a></li>
+                    <li><a href="#cards">Cartas</a></li>
+                    <li><a href="#sets">Sets</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2>Descubre las mejores cartas Pokemon</h2>
+                <p>Encuentra cartas raras, holográficas y de edición limitada</p>
+            </section>
+
+            <!-- Filters Section -->
+            <section class="filters">
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label for="searchName">Buscar por nombre:</label>
+                        <input type="text" id="searchName" placeholder="Nombre de la carta...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterType">Tipo:</label>
+                        <select id="filterType">
+                            <option value="">Todos los tipos</option>
+                            <option value="Fire">Fuego</option>
+                            <option value="Water">Agua</option>
+                            <option value="Grass">Planta</option>
+                            <option value="Electric">Eléctrico</option>
+                            <option value="Psychic">Psíquico</option>
+                            <option value="Fighting">Lucha</option>
+                            <option value="Darkness">Oscuridad</option>
+                            <option value="Metal">Metal</option>
+                            <option value="Fairy">Hada</option>
+                            <option value="Dragon">Dragón</option>
+                            <option value="Colorless">Incoloro</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterRarity">Rareza:</label>
+                        <select id="filterRarity">
+                            <option value="">Todas las rarezas</option>
+                            <option value="Common">Común</option>
+                            <option value="Uncommon">Poco común</option>
+                            <option value="Rare">Rara</option>
+                            <option value="Rare Holo">Rara Holográfica</option>
+                            <option value="Ultra Rare">Ultra Rara</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filterSet">Set:</label>
+                        <select id="filterSet">
+                            <option value="">Todos los sets</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <button id="searchBtn" onclick="searchCards()">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                        <button id="clearBtn" onclick="clearFilters()">
+                            <i class="fas fa-times"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Spinner -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Cargando cartas...</p>
+            </div>
+
+            <!-- Cards Grid -->
+            <section class="cards-section">
+                <div class="cards-grid" id="cardsGrid">
+                    <!-- Cards will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <button id="prevBtn" onclick="changePage(-1)">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <span id="pageInfo">Página 1</span>
+                <button id="nextBtn" onclick="changePage(1)">
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shopping Cart -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart" id="cart">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: $<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">
+                <i class="fas fa-credit-card"></i> Finalizar Compra
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Pokemon TCG Store. Todos los derechos reservados.</p>
+            <p>Pokemon y todas las marcas relacionadas son propiedad de Nintendo, Game Freak y Creatures Inc.</p>
+        </div>
+    </footer>
+
+    <script src="/scripts/inicio.js"></script>
+</body>
+</html>
