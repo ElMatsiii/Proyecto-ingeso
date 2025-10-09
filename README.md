@@ -1,41 +1,39 @@
 # Proyecto-ingeso
 
-🛍️ Click and Buy – Tienda de Cartas Pokémon
+Click and Buy – Tienda de Cartas Pokémon
 
-🧩 Descripción del Proyecto:
+Descripción del Proyecto:
 
 Click and Buy es una página web desarrollada para una PyME dedicada a la venta de cartas Pokémon.
 El sitio ofrece una experiencia de compra sencilla e intuitiva, permitiendo a los usuarios explorar el catálogo completo de cartas, agregarlas al carrito de compras y realizar transacciones a través de una API integrada.
 
 El propósito del proyecto es modernizar el proceso de venta y digitalizar la presencia de la tienda en línea, brindando una plataforma rápida, atractiva y funcional para los coleccionistas y fanáticos del universo Pokémon.
 
-🚀 Funcionalidades Principales:
+Funcionalidades Principales:
 
-🃏 Catálogo completo de cartas Pokémon con nombre, tipo, imagen y precio.
+Catálogo completo de cartas Pokémon con nombre, tipo, imagen y precio.
 
-🛒 Carrito de compras dinámico con actualización de cantidades y total en tiempo real.
+Carrito de compras dinámico con actualización de cantidades y total en tiempo real.
 
-💳 Integración con API de compra, que permite procesar pedidos y pagos de forma simulada o real.
+Integración con API de compra, que permite procesar pedidos y pagos de forma simulada o real.
 
-🔎 Búsqueda y filtrado de cartas por nombre, tipo o precio.
+Búsqueda y filtrado de cartas por nombre, tipo o precio.
 
-🧑‍💻 Diseño responsive, adaptado a pantallas de escritorio, tablet y dispositivos móviles.
+Diseño responsive, adaptado a pantallas de escritorio, tablet y dispositivos móviles.
 
-🔐 (Opcional) Registro e inicio de sesión de usuarios para guardar compras o listas de deseos.
+Equipo de Desarrollo:
 
-👥 Equipo de Desarrollo:
+Máximo Sazo — Developer
 
-💻 Máximo Sazo — Developer
+Maximiliano Pizarro — Product Owner
 
-🧠 Maximiliano Pizarro — Product Owner
+Daniela Infante — Scrum Master
 
-🎨 Daniela Infante — Scrum Master
+Futuras Mejoras:
 
-🧭 Futuras Mejoras:
+Integración con pasarelas de pago simulados.
 
-Integración con pasarelas de pago reales (MercadoPago, PayPal, etc.)
-
-Sistema de login y registro con autenticación JWT.
+Sistema de login y registro con autenticación JWT(Posiblemente).
 
 Historial de compras y seguimiento de pedidos.
 
