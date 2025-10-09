@@ -140,3 +140,4 @@ function showError(message) {
 function reloadCards() {
     loadCards();
 }
+
