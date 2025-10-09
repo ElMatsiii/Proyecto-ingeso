@@ -2,14 +2,14 @@
 
 🛍️ Click and Buy – Tienda de Cartas Pokémon
 
-🧩 Descripción del Proyecto
+🧩 Descripción del Proyecto:
 
 Click and Buy es una página web desarrollada para una PyME dedicada a la venta de cartas Pokémon.
 El sitio ofrece una experiencia de compra sencilla e intuitiva, permitiendo a los usuarios explorar el catálogo completo de cartas, agregarlas al carrito de compras y realizar transacciones a través de una API integrada.
 
 El propósito del proyecto es modernizar el proceso de venta y digitalizar la presencia de la tienda en línea, brindando una plataforma rápida, atractiva y funcional para los coleccionistas y fanáticos del universo Pokémon.
 
-🚀 Funcionalidades Principales
+🚀 Funcionalidades Principales:
 
 🃏 Catálogo completo de cartas Pokémon con nombre, tipo, imagen y precio.
 
@@ -23,7 +23,7 @@ El propósito del proyecto es modernizar el proceso de venta y digitalizar la pr
 
 🔐 (Opcional) Registro e inicio de sesión de usuarios para guardar compras o listas de deseos.
 
-Equipo de Desarrollo:
+👥 Equipo de Desarrollo:
 
 💻 Máximo Sazo — Developer
 
@@ -31,7 +31,7 @@ Equipo de Desarrollo:
 
 🎨 Daniela Infante — Scrum Master
 
-🧭 Futuras Mejoras
+🧭 Futuras Mejoras:
 
 Integración con pasarelas de pago reales (MercadoPago, PayPal, etc.)
 
