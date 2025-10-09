@@ -1,13 +1,6 @@
--- ===============================================
--- 🛍️ BASE DE DATOS: Click and Buy
--- ===============================================
-
 CREATE DATABASE click_and_buy;
 USE click_and_buy;
 
--- ===============================================
--- 🧑 USUARIOS
--- ===============================================
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -19,9 +12,6 @@ CREATE TABLE usuarios (
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- ===============================================
--- 🃏 CARTAS
--- ===============================================
 CREATE TABLE cartas (
     id_carta INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -33,9 +23,6 @@ CREATE TABLE cartas (
     descripcion TEXT
 );
 
--- ===============================================
--- 🛒 CARRITO
--- ===============================================
 CREATE TABLE carrito (
     id_carrito INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -45,9 +32,6 @@ CREATE TABLE carrito (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- ===============================================
--- 🧾 CARRITO DETALLE
--- ===============================================
 CREATE TABLE carrito_detalle (
     id_detalle INT AUTO_INCREMENT PRIMARY KEY,
     id_carrito INT NOT NULL,
@@ -61,9 +45,6 @@ CREATE TABLE carrito_detalle (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- ===============================================
--- 📦 ORDEN
--- ===============================================
 CREATE TABLE orden (
     id_orden INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -74,9 +55,6 @@ CREATE TABLE orden (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- ===============================================
--- 🧩 ORDEN DETALLE
--- ===============================================
 CREATE TABLE orden_detalle (
     id_detalle_orden INT AUTO_INCREMENT PRIMARY KEY,
     id_orden INT NOT NULL,
@@ -90,8 +68,5 @@ CREATE TABLE orden_detalle (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- ===============================================
--- 💳 PAGO
--- ===============================================
 CREATE TABLE pago (
     id_pago INT AUTO_INCR
