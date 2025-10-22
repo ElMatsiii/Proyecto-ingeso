@@ -360,3 +360,32 @@ body {
         font-size: 1.5rem;
     }
 }
+
+/* En inicio.css, al final del archivo */
+
+.pagination-controls {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.pagination-controls button {
+    background: white;
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-controls button:hover {
+    background: #eff6ff; /* Un azul muy claro */
+}
+
+.pagination-controls button.active {
+    background: #3b82f6;
+    color: white;
+    font-weight: bold;
+}

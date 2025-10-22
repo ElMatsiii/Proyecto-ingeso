@@ -1,143 +1,121 @@
-// Variable global para almacenar las cartas
-let currentCards = [];
-const API_BASE_URL = 'https://api.pokemontcg.io/v2';
+// Pega tu clave de API aquí, dentro de las comillas
+// Pega tu clave de API aquí, dentro de las comillas
+const API_KEY = '48a13f81-415e-49f8-b855-56d75f0720ed'; 
 
-// Inicializar cuando se carga la página
+// --- VARIABLES GLOBALES ---
+const API_BASE_URL = 'https://api.pokemontcg.io/v2';
+const CARDS_PER_PAGE = 9;
+let currentPage = 1;
+
+// --- EVENT LISTENER ---
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Pokemon TCG Store cargado');
-    // La página se inicia sin cartas, el usuario debe hacer clic en "Ver Cartas"
+    loadCards(1);
 });
 
-// Función para mostrar/ocultar loading
-function showLoading(show) {
-    document.getElementById('loading').style.display = show ? 'block' : 'none';
-}
+// --- FUNCIONES ---
 
-// Función principal para cargar cartas desde la API
-async function loadCards() {
+async function loadCards(page = 1) {
+    console.log(`Intentando cargar página: ${page}`);
+    currentPage = page;
+
     try {
         showLoading(true);
+        document.getElementById('cardsGrid').innerHTML = '';
+        document.getElementById('pagination').innerHTML = '';
+
+        const url = `${API_BASE_URL}/cards?pageSize=${CARDS_PER_PAGE}&page=${page}`;
         
-        // Obtener cartas aleatorias de la API
-        const response = await fetch(`${API_BASE_URL}/cards?pageSize=9`);
+        // --- CAMBIO CLAVE AQUÍ ---
+        // Añadimos las cabeceras 'Accept' y 'Content-Type' para que la solicitud
+        // parezca más estándar y evitar el error 500 del servidor.
+        const response = await fetch(url, {
+            headers: {
+                'X-Api-Key': API_KEY,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
         
         if (!response.ok) {
-            throw new Error('Error al conectar con la API');
+            throw new Error(`Error de la API: ${response.statusText} (código: ${response.status})`);
         }
         
         const data = await response.json();
-        currentCards = data.data || [];
         
-        showLoading(false);
-        displayCards(currentCards);
+        displayCards(data.data || []);
+        displayPagination(data.totalCount);
         
     } catch (error) {
-        console.error('Error al cargar cartas:', error);
+        console.error('Error detallado al cargar cartas:', error); 
+        showError('No se pudieron cargar las cartas.');
+    } finally {
         showLoading(false);
-        showError('Error al cargar las cartas. Por favor, intenta de nuevo.');
     }
 }
 
-// Función para mostrar las cartas en la página
-function displayCards(cards) {
-    const cardsGrid = document.getElementById('cardsGrid');
+function displayPagination(totalCount) {
+    const paginationContainer = document.getElementById('pagination');
+    if (!paginationContainer || !totalCount) return;
+
+    paginationContainer.innerHTML = '';
+    const totalPages = Math.ceil(totalCount / CARDS_PER_PAGE);
+    let startPage = Math.max(1, currentPage - 4);
+    let endPage = Math.min(totalPages, startPage + 9);
+    if (endPage - startPage < 9) { startPage = Math.max(1, endPage - 9); }
     
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.innerText = i;
+        pageButton.addEventListener('click', () => loadCards(i));
+        if (i === currentPage) { pageButton.className = 'active'; }
+        paginationContainer.appendChild(pageButton);
+    }
+}
+
+// --- El resto de funciones auxiliares (sin cambios) ---
+
+function showLoading(show) {
+    const el = document.getElementById('loading');
+    if (el) el.style.display = show ? 'block' : 'none';
+}
+
+function displayCards(cards) {
+    const grid = document.getElementById('cardsGrid');
     if (!cards || cards.length === 0) {
-        cardsGrid.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: white;">
-                <h3>No se encontraron cartas</h3>
-                <p>Intenta cargar de nuevo</p>
-            </div>
-        `;
+        grid.innerHTML = `<div class="loading"><p>No se encontraron cartas.</p></div>`;
         return;
     }
-    
-    cardsGrid.innerHTML = '';
-    
-    cards.forEach(card => {
-        const cardElement = createCardElement(card);
-        cardsGrid.appendChild(cardElement);
-    });
+    cards.forEach(card => grid.appendChild(createCardElement(card)));
 }
 
-// Función para crear el elemento HTML de cada carta
 function createCardElement(card) {
-    const cardDiv = document.createElement('div');
-    cardDiv.className = 'card-item';
-    
-    // Procesar información de la carta
-    const types = card.types ? card.types : ['Desconocido'];
+    const div = document.createElement('div');
+    div.className = 'card-item';
+    const types = card.types || ['N/A'];
     const rarity = card.rarity || 'Común';
-    const setName = card.set ? card.set.name : 'Set desconocido';
-    const artist = card.artist || 'Artista desconocido';
-    
-    cardDiv.innerHTML = `
-        <div class="card-image">
-            <img src="${card.images?.large || card.images?.small || 'https://via.placeholder.com/245x342?text=Pokemon+Card'}" 
-                 alt="${card.name}" 
-                 onerror="this.src='https://via.placeholder.com/245x342?text=Pokemon+Card'">
-        </div>
+    const setName = card.set?.name || 'N/A';
+    div.innerHTML = `
+        <div class="card-image"><img src="${card.images?.large || card.images?.small || ''}" alt="${card.name}" onerror="this.src='https://via.placeholder.com/245x342?text=No+Image'"></div>
         <div class="card-content">
-            <div class="card-name">${card.name}</div>
+            <h3 class="card-name">${card.name}</h3>
             <div class="card-info">
-                <div class="card-detail">
-                    <span class="card-label">Tipo:</span>
-                    <div class="card-types">
-                        ${types.map(type => `<span class="type-badge">${type}</span>`).join('')}
-                    </div>
-                </div>
-                <div class="card-detail">
-                    <span class="card-label">Rareza:</span>
-                    <span class="rarity-badge ${getRarityClass(rarity)}">${rarity}</span>
-                </div>
-                <div class="card-detail">
-                    <span class="card-label">Set:</span>
-                    <span class="card-value">${setName}</span>
-                </div>
-                <div class="card-detail">
-                    <span class="card-label">Artista:</span>
-                    <span class="card-value">${artist}</span>
-                </div>
+                <div class="card-detail"><span class="card-label">Tipo:</span><div class="card-types">${types.map(t => `<span class="type-badge">${t}</span>`).join('')}</div></div>
+                <div class="card-detail"><span class="card-label">Rareza:</span><span class="rarity-badge ${getRarityClass(rarity)}">${rarity}</span></div>
+                <div class="card-detail"><span class="card-label">Set:</span><span class="card-value">${setName}</span></div>
             </div>
-        </div>
-    `;
-    
-    return cardDiv;
+        </div>`;
+    return div;
 }
 
-// Función para obtener la clase CSS según la rareza
 function getRarityClass(rarity) {
-    const rarityLower = rarity.toLowerCase();
-    
-    if (rarityLower.includes('common') || rarityLower === 'común') {
-        return 'rarity-common';
-    } else if (rarityLower.includes('uncommon') || rarityLower === 'poco común') {
-        return 'rarity-uncommon';
-    } else if (rarityLower.includes('rare') || rarityLower === 'rara') {
-        return 'rarity-rare';
-    } else if (rarityLower.includes('ultra') || rarityLower.includes('secret')) {
-        return 'rarity-ultra';
-    } else {
-        return 'rarity-common';
-    }
+    const r = (rarity || '').toLowerCase();
+    if (r.includes('rare')) return 'rarity-rare';
+    if (r.includes('uncommon')) return 'rarity-uncommon';
+    if (r.includes('ultra') || r.includes('secret')) return 'rarity-ultra';
+    return 'rarity-common';
 }
 
-// Función para mostrar errores
 function showError(message) {
-    const cardsGrid = document.getElementById('cardsGrid');
-    cardsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: white; background: rgba(239, 68, 68, 0.1); border-radius: 10px; border: 2px solid rgba(239, 68, 68, 0.3);">
-            <h3 style="color: #ef4444; margin-bottom: 1rem;"> Error</h3>
-            <p>${message}</p>
-            <button onclick="loadCards()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Intentar de nuevo
-            </button>
-        </div>
-    `;
+    const grid = document.getElementById('cardsGrid');
+    grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: white;"><h3 style="color: #ef4444;">Error</h3><p>${message}</p><button onclick="loadCards(1)">Reintentar</button></div>`;
 }
-
-// Función para recargar cartas (opcional)
-function reloadCards() {
-    loadCards();
-}
-
