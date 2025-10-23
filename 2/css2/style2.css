@@ -615,3 +615,43 @@ footer.site-footer {
 .btn-mini:hover {
   background: #ffd633;
 }
+/* === Productos Destacados con imagen lateral === */
+.featured-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  flex: 3;
+}
+
+.featured-side-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.featured-side-img img {
+  width: 250px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 900px) {
+  .featured-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .featured-side-img {
+    margin-top: 1.5rem;
+  }
+}

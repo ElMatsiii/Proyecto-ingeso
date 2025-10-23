@@ -11,7 +11,6 @@ El proyecto está desarrollado con **HTML**, **CSS**, **TypeScript** y utiliza e
 - **Carrito persistente:** las cartas añadidas se guardan en `localStorage`.
 - **Vista de producto:** permite mostrar detalles de cada carta (imagen, tipo, rareza, precio).
 - **Formulario de contacto:** simula el envío de mensajes desde la sección *Acerca de*.
-- **Arquitectura moderna:** escrita en TypeScript y compilada automáticamente con el SDK de TCGdex.
 
 ---
 
