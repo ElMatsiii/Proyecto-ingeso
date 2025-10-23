@@ -1,3 +1,19 @@
+/* Estructura para mantener el footer al fondo*/
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main, section {
+  flex: 1; /* ocupa el espacio disponible antes del footer */
+}
+
+.site-footer {
+  margin-top: auto; /* empuja el footer al final */
+}
+
 :root {
   --primary: #000;
   --accent: #ffcb05;
@@ -53,7 +69,7 @@ header nav a:hover {
   justify-content: center;
   color: #fff;
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
-              url('../assets/img/hero-cards.jpg') center/cover no-repeat;
+              url('../assets/red.png') center/cover no-repeat;
 }
 
 .hero .content {
@@ -478,74 +494,110 @@ footer.site-footer {
   gap: 1.5rem;
 }
 
-/* === PRODUCTOS DESTACADOS CORREGIDO (1 grande + 6 pequeñas en 3x2) === */
-.featured-grid {
+/* === PRODUCTOS DESTACADOS (centrado: 1 grande + 6 pequeñas) === */
+.featured-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  justify-content: center; /* 🔹 centra horizontalmente el bloque completo */
   align-items: flex-start;
-  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 2rem auto;
+  max-width: 1200px; /* 🔹 limita el ancho para que no se disperse */
 }
 
-/* ---- Carta principal grande ---- */
+/* Carta grande a la izquierda */
 .featured-main {
-  flex: 1 1 45%;
+  flex: 1 1 380px;
   max-width: 420px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.featured-main:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 18px rgba(255, 204, 0, 0.4);
 }
 
 .featured-main img {
   width: 100%;
   max-width: 380px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-bottom: 1rem;
+  object-fit: contain;
 }
 
-/* --- Cuadrícula 3x2 de cartas pequeñas (ajustada al estilo del grid nuevo) --- */
+.featured-main h3 {
+  font-size: 1.1rem;
+  margin: 0.4rem 0;
+  color: #fff;
+}
+
+.featured-main p {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 0.6rem;
+}
+
+.featured-main .btn {
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.featured-main .btn:hover {
+  background: #ffd633;
+}
+
+/* Cuadrícula de 6 cartas pequeñas */
 .featured-side {
-  flex: 1 1 50%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 0.8rem; /* 🔹 reduce separación entre cartas */
+  gap: 1rem;
   justify-items: center;
   align-items: start;
+  flex: 1 1 550px;
+  max-width: 600px;
 }
 
+/* Cartas pequeñas */
 .featured-mini {
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 0.4rem; /* 🔹 menos espacio interno */
+  border-radius: 10px;
+  padding: 0.6rem;
   text-align: center;
   width: 100%;
-  max-width: 145px; /* 🔹 un poco más angosta */
-  box-shadow: 0 0 4px rgba(0,0,0,0.25);
+  max-width: 150px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
   transition: transform 0.2s ease;
 }
 
 .featured-mini:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
-/* 🔹 Imágenes más ajustadas al espacio */
 .featured-mini img {
   width: 100%;
-  max-width: 120px;
+  max-width: 130px;
   height: auto;
   border-radius: 6px;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.4rem;
   object-fit: contain;
 }
 
-/* 🔹 Texto y botones */
 .featured-mini p {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #fff;
-  margin: 0.1rem 0;
+  margin: 0.2rem 0;
 }
 
 .btn-mini {
@@ -563,4 +615,3 @@ footer.site-footer {
 .btn-mini:hover {
   background: #ffd633;
 }
-
