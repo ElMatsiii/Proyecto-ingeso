@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Click & Buy — Catálogo</title>
+  <link rel="stylesheet" href="../css2/style2.css" />
+</head>
+<body>
+  
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="index2.html">Inicio</a>
+        <a href="catalogo2.html" class="active">Catálogo</a>
+        <a href="about2.html">Acerca</a>
+        <a href="carrito2.html">Carrito</a>
+      </nav>
+      <div class="icons">
+        <a href="carrito2.html" class="cart-icon">🛒</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="container section">
+    <h1>Catálogo de Cartas Pokémon</h1>
+    <p>Explora nuestra colección aleatoria de cartas. Se muestran 40 por página.</p>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <input type="text" id="filterName" placeholder="Buscar por nombre..." />
+      <select id="filterType">
+        <option value="">Todos los tipos</option>
+        <option value="Fire">Fuego</option>
+        <option value="Water">Agua</option>
+        <option value="Grass">Planta</option>
+        <option value="Electric">Eléctrico</option>
+        <option value="Psychic">Psíquico</option>
+        <option value="Darkness">Siniestro</option>
+        <option value="Fighting">Lucha</option>
+        <option value="Colorless">Incoloro</option>
+        <option value="Metal">Metal</option>
+        <option value="Dragon">Dragón</option>
+      </select>
+      <input type="text" id="filterSet" placeholder="Buscar por set..." />
+      <button id="applyFilters" class="btn">Aplicar filtros</button>
+      <button id="clearFilters" class="btn">Limpiar</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Cargando cartas... Por favor espera un momento.</p>
+    </div>
+
+    <!-- Grid -->
+    <div id="cardsGrid" class="grid"></div>
+
+    <!-- Paginación -->
+    <div id="pagination" class="pagination-controls"></div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© 2025 Click & Buy | Tu tienda Pokémon TCG favorita</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/catalogo.js"></script>
+</body>
+</html>

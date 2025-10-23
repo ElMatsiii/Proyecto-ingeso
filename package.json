@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@tcgdex/sdk": "^2.7.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
