@@ -84,24 +84,25 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     // --- Crear carta individual ---
     function createCard(card) {
-        const div = document.createElement("div");
-        div.className = "card";
-        const img = buildImageUrl(card.image);
-        div.innerHTML = `
-      <img src="${img}" alt="${card.name}"
-           onerror="this.src='https://via.placeholder.com/245x342?text=Sin+imagen'">
-      <div class="card-body">
+    const div = document.createElement("div");
+    div.className = "card";
+    const img = buildImageUrl(card.image);
+    div.innerHTML = `
+        <img src="${img}" alt="${card.name}"
+            onerror="this.onerror=null; this.src='../assets/no-image.png';">
+        <div class="card-body">
         <h3>${card.name}</h3>
         <p>${card.rarity || "Común"} • ${(card.types || []).join(", ") || "Sin tipo"}</p>
         <p class="price"><strong>Set:</strong> ${card.set?.name || "Desconocido"}</p>
         <button class="btn view-card">Ver Detalle</button>
         <button class="btn add-cart">Agregar</button>
-      </div>
+        </div>
     `;
-        div.querySelector(".add-cart")?.addEventListener("click", () => addToCart(card));
-        div.querySelector(".view-card")?.addEventListener("click", () => goToDetail(card));
-        return div;
+    div.querySelector(".add-cart")?.addEventListener("click", () => addToCart(card));
+    div.querySelector(".view-card")?.addEventListener("click", () => goToDetail(card));
+    return div;
     }
+
     //           PAGINACIÓN
     function renderPagination() {
         const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -146,11 +147,15 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     //UTILIDADES
     function buildImageUrl(base) {
-        if (!base)
-            return "https://via.placeholder.com/245x342?text=Sin+imagen";
+    if (!base) return "../assets/no-imagen.png";
+    try {
         const localized = base.includes("/en/") ? base.replace("/en/", "/es/") : base;
         return `${localized}/high.jpg`;
+    } catch {
+        return "../assets/no-imagen.png";
     }
+    }
+
     function takeRandom(arr, n) {
         const copy = [...arr];
         for (let i = copy.length - 1; i > 0; i--) {

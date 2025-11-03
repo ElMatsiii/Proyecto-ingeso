@@ -1,6 +1,25 @@
 "use strict";
 window.addEventListener("DOMContentLoaded", () => {
     console.log("Inicio cargado correctamente");
+    // === MODO OSCURO ===
+    const themeBtn = document.getElementById("themeBtn");
+    const body = document.body;
+
+    // Verifica si el usuario ya tiene una preferencia guardada
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+    body.classList.add("dark-mode");
+    themeBtn.textContent = "☀️";
+    }
+
+    // Alterna entre temas
+    themeBtn?.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const isDark = body.classList.contains("dark-mode");
+    themeBtn.textContent = isDark ? "☀️" : "🌙";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+
     const newCards = document.getElementById("newCards");
     const featuredCards = document.getElementById("featuredCards");
     const loading = document.getElementById("loading");
@@ -79,10 +98,14 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
     function buildImageUrl(base) {
-        if (!base)
-            return "https://via.placeholder.com/245x342?text=Sin+imagen";
-        const localized = base.includes("/en/") ? base.replace("/en/", "/es/") : base;
-        return `${localized}/high.jpg`;
+        if (!base) return "../assets/no-imagen.png"; // ruta local a imagen de respaldo
+
+        try {
+            const localized = base.includes("/en/") ? base.replace("/en/", "/es/") : base;
+            return `${localized}/high.jpg`;
+        } catch {
+            return "../assets/no-imagen.png";
+        }
     }
     function shuffle(arr) {
         const copy = [...arr];
