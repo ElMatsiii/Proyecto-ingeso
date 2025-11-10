@@ -1,7 +1,7 @@
 // src/presentation/controllers/CatalogoController.js
 
 import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
-import { GetCards } from '../../core/usecases/getCardDetail.js';
+import { GetCards } from '../../core/usecases/getCards.js';
 import { FilterCards } from '../../core/usecases/filterCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
@@ -10,6 +10,7 @@ import { LoadingComponent } from '../components/loadingComponent.js';
 import { PaginationComponent } from '../components/paginationComponent.js';
 import { STORAGE_KEYS, ROUTES, TYPE_TRANSLATIONS } from '../../shared/config/constants.js';
 import { takeRandom } from '../../shared/utils/arrayUtils.js';
+import { cacheService } from '../../shared/services/cacheService.js';
 
 export class CatalogoController {
   constructor() {

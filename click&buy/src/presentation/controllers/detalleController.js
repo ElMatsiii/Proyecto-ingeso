@@ -55,7 +55,7 @@ export class DetalleController {
       <div class="detalle-card">
         <div class="detalle-img">
           <img src="${imgUrl}" alt="${card.name}"
-               onerror="this.src='../assets/no-imagen.png'">
+               onerror="this.src='../assets/images/no-imagen.png'">
         </div>
         <div class="detalle-info">
           <h1>${card.name}</h1>

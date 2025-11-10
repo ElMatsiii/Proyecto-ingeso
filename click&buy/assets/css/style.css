@@ -256,19 +256,19 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===== PRODUCTOS DESTACADOS ===== */
+/* ===== PRODUCTOS DESTACADOS - ACTUALIZACIÓN ===== */
 .featured-grid {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ✅ Grid de 2 columnas iguales */
+  justify-items: center;
+  align-items: start;
   gap: 2rem;
-  flex-wrap: wrap;
   margin: 2rem auto;
   max-width: 1200px;
 }
 
 .featured-main {
-  flex: 1 1 380px;
+  width: 100%;
   max-width: 420px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
@@ -291,24 +291,23 @@ body {
   object-fit: contain;
 }
 
+/* ✅ ACTUALIZADO: Grid de cartas mini ocupa el mismo espacio */
 .featured-side {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 1rem;
-  justify-items: center;
-  align-items: start;
-  flex: 1 1 550px;
+  gap: 1.5rem;
+  width: 100%;
   max-width: 600px;
 }
 
+/* ✅ ACTUALIZADO: Cartas mini más grandes */
 .featured-mini {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
-  padding: 0.6rem;
+  padding: 0.8rem;
   text-align: center;
   width: 100%;
-  max-width: 150px;
   box-shadow: 0 0 6px rgba(0,0,0,0.25);
   transition: transform 0.2s ease;
 }
@@ -317,21 +316,25 @@ body {
   transform: scale(1.05);
 }
 
+/* ✅ ACTUALIZADO: Imágenes mini más grandes */
 .featured-mini img {
   width: 100%;
-  max-width: 130px;
+  max-width: 160px;
   height: auto;
   border-radius: 6px;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   object-fit: contain;
 }
 
 .featured-mini p {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text);
-  margin: 0.2rem 0;
+  margin: 0.3rem 0;
 }
 
+.featured-mini .btn-mini {
+  margin-top: 0.5rem;
+}
 /* ===== FILTROS ===== */
 .filters {
   display: flex;

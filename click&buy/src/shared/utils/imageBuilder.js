@@ -1,6 +1,6 @@
 // src/shared/utils/imageBuilder.js
 
-const FALLBACK_IMAGE = '../assets/no-imagen.png';
+const FALLBACK_IMAGE = '../../assets/images/no-imagen.png';
 
 /**
  * Construye la URL de imagen de alta calidad

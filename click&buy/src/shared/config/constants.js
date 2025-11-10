@@ -13,14 +13,16 @@ export const APP_CONFIG = {
   PAGE_SIZE: 40,
   MAX_CONCURRENCY: 8,
   FEATURED_CARDS: 7,
-  NEW_CARDS: 7,
+  NEW_CARDS: 10, // ✅ Cambiado de 7 a 10
   RECOMMENDED_CARDS: 8
 };
 
 export const STORAGE_KEYS = {
   CART: 'carrito',
   THEME: 'theme',
-  SELECTED_CARD: 'selectedCardId'
+  SELECTED_CARD: 'selectedCardId',
+  CATALOG_CACHE: 'catalogCache',
+  CATALOG_CACHE_TIME: 'catalogCacheTime'
 };
 
 export const ROUTES = {
@@ -61,3 +63,55 @@ export const TYPE_TRANSLATIONS_REVERSE = {
   dragon: 'Dragon',
   hada: 'Fairy'
 };
+
+// ✅ NUEVO: Rarezas altas para cartas destacadas (en inglés y español)
+export const HIGH_RARITIES = [
+  // En inglés (de la API)
+  'Ultra Rare',
+  'Secret Rare',
+  'Hyper Rare',
+  'Rainbow Rare',
+  'Gold Rare',
+  'Amazing Rare',
+  'Shiny Rare',
+  'Rare Holo',
+  'Rare Holo EX',
+  'Rare Holo GX',
+  'Rare Holo V',
+  'Rare Holo VMAX',
+  'Rare Holo VSTAR',
+  'Rare Ultra',
+  'Rare Secret',
+  'Rare Rainbow',
+  'Double Rare',
+  'Illustration Rare',
+  'Special Illustration Rare',
+  'Shiny Ultra Rare',
+  'ACE SPEC Rare',
+  // En español (por si la API devuelve traducidos)
+  'Ultra Rara',
+  'Secreta Rara',
+  'Hiper Rara',
+  'Arcoíris Rara',
+  'Dorada Rara',
+  'Increíble Rara',
+  'Brillante Rara',
+  'Rara Holo',
+  'Rara Holo EX',
+  'Rara Holo GX',
+  'Rara Holo V',
+  'Rara Holo VMAX',
+  'Rara Holo VSTAR',
+  'Doble Rara',
+  'Ilustración Rara',
+  // Términos generales que indican rareza
+  'Holo',
+  'EX',
+  'GX',
+  'V ',
+  'VMAX',
+  'VSTAR',
+  'Prime',
+  'Legend',
+  'BREAK'
+];

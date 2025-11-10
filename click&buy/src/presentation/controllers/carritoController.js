@@ -33,7 +33,7 @@ export class CarritoController {
     this.container.innerHTML = items.map((item, index) => `
       <div class="cart-item">
         <img src="${item.imagen}" alt="${item.nombre}"
-             onerror="this.src='../assets/no-imagen.png'">
+             onerror="this.src='../assets/images/no-imagen.png'">
         <div>
           <h3>${item.nombre}</h3>
           <p>Precio: $${item.precio}</p>

@@ -79,7 +79,7 @@ export class CardComponent {
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"
-           onerror="this.src='../assets/no-imagen.png'">
+           onerror="this.src='../assets/images/no-imagen.png'">
       <div class="card-body">
         <h3>${card.name}</h3>
         <p><strong>Set:</strong> ${card.getSetName()}</p>
