@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy — Acerca de</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="about.html" class="active">Acerca</a>
+        <a href="carrito.html">Carrito</a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <main class="container">
+    <section class="about">
+      <div>
+        <h2>Acerca de Click & Buy</h2>
+        <p style="margin-top:8px; color:#6b7280;">
+          Tu tienda de confianza para cartas Pokémon individuales y coleccionables.
+        </p>
+        <p style="margin-top:10px;">
+          En <strong>Click & Buy</strong> somos una pyme apasionada por el mundo Pokémon TCG.
+          Desde 2020 nos especializamos en traer cartas individuales en perfecto estado
+          para jugadores y coleccionistas. Trabajamos con dedicación para ofrecer productos auténticos,
+          envíos nacionales e internacionales y un servicio personalizado que conecta a los fans
+          con las cartas que siempre buscaron.
+        </p>
+
+        <h3 style="margin-top:20px;">Contáctanos</h3>
+        <form class="form" id="contactForm" style="margin-top:10px;">
+          <div class="row">
+            <input class="input" type="text" id="nombre" placeholder="Nombre" required>
+            <input class="input" type="text" id="apellido" placeholder="Apellido" required>
+          </div>
+          <input class="input" type="email" id="email" placeholder="Correo electrónico" required>
+          <textarea id="mensaje" placeholder="Tu mensaje" required></textarea>
+          <button class="btn" type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <img src="../assets/images/red.png" alt="Entrenador Pokémon">
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Click & Buy</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main-about.js"></script>
+  <script src="../src/shared/theme.js"></script>
+</body>
+</html>

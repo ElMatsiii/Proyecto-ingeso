@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy — Inicio</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="index.html" class="active">Inicio</a>
+        <a href="pages/catalogo.html">Catálogo</a>
+        <a href="pages/about.html">Acerca</a>
+        <a href="pages/carrito.html">Carrito</a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <h1>Encuentra tus cartas Pokémon favoritas</h1>
+      <p>Descubre, compra y amplía tu mazo con cartas únicas</p>
+      <a href="pages/catalogo.html" class="btn">Ver Catálogo</a>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container section">
+    <h2>Productos nuevos</h2>
+    <div id="newCards" class="grid grid-new"></div>
+
+    <h2>Productos destacados</h2>
+    <div id="featuredCards" class="featured-grid"></div>
+
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Cargando cartas... Por favor espera un momento.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© 2025 Click & Buy | Tu tienda Pokémon TCG favorita</p>
+    </div>
+  </footer>
+
+  <script type="module" src="src/main-home.js"></script>
+  <script src="src/shared/theme.js"></script>
+</body>
+</html>

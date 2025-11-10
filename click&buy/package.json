@@ -1,0 +1,21 @@
+{
+  "name": "click-and-buy",
+  "version": "2.0.0",
+  "description": "E-commerce de cartas Pokémon con Arquitectura Limpia",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=3000 --open=index.html",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "pokemon",
+    "tcg",
+    "ecommerce",
+    "clean-architecture"
+  ],
+  "author": "Tu Equipo",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}

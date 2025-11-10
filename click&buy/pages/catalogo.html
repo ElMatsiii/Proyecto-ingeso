@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy — Catálogo</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html" class="active">Catálogo</a>
+        <a href="about.html">Acerca</a>
+        <a href="carrito.html">Carrito</a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container section">
+    <h1>Catálogo de Cartas Pokémon</h1>
+    <p>Explora nuestra colección de cartas.</p>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <input type="text" id="filterName" placeholder="Buscar por nombre...">
+      <select id="filterType">
+        <option value="">Todos los tipos</option>
+      </select>
+      <input type="text" id="filterSet" placeholder="Buscar por set...">
+      <button id="applyFilters" class="btn">Aplicar filtros</button>
+      <button id="clearFilters" class="btn">Limpiar</button>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Cargando cartas... Por favor espera un momento.</p>
+    </div>
+
+    <!-- Grid de Cartas -->
+    <div id="cardsGrid" class="grid"></div>
+
+    <!-- Paginación -->
+    <div id="pagination" class="pagination-controls"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© 2025 Click & Buy | Tu tienda Pokémon TCG favorita</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main-catalogo.js"></script>
+  <script src="../src/shared/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy — Detalle</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="about.html">Acerca</a>
+        <a href="carrito.html">Carrito</a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container section" id="detalleContainer">
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Cargando detalles...</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© 2025 Click & Buy | Tu tienda Pokémon TCG favorita</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main-detalle.js"></script>
+  <script src="../src/shared/theme.js"></script>
+</body>
+</html>
