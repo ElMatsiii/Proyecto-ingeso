@@ -22,7 +22,9 @@ export const STORAGE_KEYS = {
   THEME: 'theme',
   SELECTED_CARD: 'selectedCardId',
   CATALOG_CACHE: 'catalogCache',
-  CATALOG_CACHE_TIME: 'catalogCacheTime'
+  CATALOG_CACHE_TIME: 'catalogCacheTime',
+  HOME_CACHE: 'homeCache',
+  HOME_CACHE_TIME: 'homeCacheTime'
 };
 
 export const ROUTES = {

@@ -115,15 +115,45 @@ class CacheService {
   }
 
   /**
-   * Limpia el cache
+   * Obtiene las cartas de inicio del cache
    */
-  clearCache() {
+  getHomeFromCache() {
     try {
-      localStorage.removeItem(this.cacheKey);
-      localStorage.removeItem(this.cacheTimeKey);
-      console.log('🗑️ Cache limpiado');
+      const cacheTimeKey = STORAGE_KEYS.HOME_CACHE_TIME;
+      const cacheTime = localStorage.getItem(cacheTimeKey);
+      
+      if (!cacheTime) return null;
+      
+      const timeDiff = Date.now() - parseInt(cacheTime);
+      if (timeDiff >= this.cacheExpiration) {
+        return null;
+      }
+      
+      const data = localStorage.getItem(STORAGE_KEYS.HOME_CACHE);
+      if (!data) return null;
+      
+      const parsed = JSON.parse(data);
+      console.log(`✅ Cartas de inicio cargadas desde cache`);
+      return parsed;
     } catch (error) {
-      console.error('Error clearing cache:', error);
+      console.error('Error reading home cache:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Guarda las cartas de inicio en el cache
+   */
+  saveHomeToCache(newCards, featuredCards) {
+    try {
+      const data = { newCards, featuredCards };
+      localStorage.setItem(STORAGE_KEYS.HOME_CACHE, JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEYS.HOME_CACHE_TIME, Date.now().toString());
+      console.log(`💾 Cartas de inicio guardadas en cache`);
+      return true;
+    } catch (error) {
+      console.error('Error saving home cache:', error);
+      return false;
     }
   }
 }

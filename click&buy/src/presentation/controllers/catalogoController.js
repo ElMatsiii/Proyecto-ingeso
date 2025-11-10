@@ -42,10 +42,8 @@ export class CatalogoController {
     try {
       this.loading.show();
       
-      // Cargar cartas iniciales
-      const cardBriefs = await this.getCardsUseCase.execute();
-      const sample = takeRandom(cardBriefs, 500);
-      this.allCards = await this.getCardsUseCase.executeWithDetails(sample);
+      // 🚀 Intentar cargar desde cache primero
+      this.allCards = await cacheService.getCatalogCards();
       this.filteredCards = [...this.allCards];
       
       // Configurar filtros

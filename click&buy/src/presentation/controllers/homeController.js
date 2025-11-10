@@ -60,6 +60,14 @@ export class HomeController {
       
       this.renderNewCards(newCards);
       this.renderFeaturedCards(featuredCards);
+      
+      // 🚀 Iniciar pre-carga del catálogo en segundo plano
+      setTimeout(() => {
+        cacheService.preloadCatalog().catch(err => 
+          console.warn('Pre-carga del catálogo falló:', err)
+        );
+      }, 1000); // Esperar 1 segundo después de cargar la página
+      
     } catch (error) {
       console.error('Error initializing home:', error);
       this.showError();
