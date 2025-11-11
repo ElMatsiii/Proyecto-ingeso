@@ -2,6 +2,7 @@
 
 import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
 import { GetCards } from '../../core/usecases/getCards.js';
+import { Card } from '../../core/domain/entities/card.js';
 import { STORAGE_KEYS } from '../config/constants.js';
 
 class CacheService {
@@ -42,8 +43,12 @@ class CacheService {
       if (!data) return null;
       
       const parsed = JSON.parse(data);
-      console.log(`✅ Cartas cargadas desde cache: ${parsed.length}`);
-      return parsed;
+      
+      // 🔥 IMPORTANTE: Re-hidratar como instancias de Card
+      const cards = parsed.map(cardData => Card.fromApiResponse(cardData));
+      
+      console.log(`✅ Cartas cargadas desde cache: ${cards.length}`);
+      return cards;
     } catch (error) {
       console.error('Error reading from cache:', error);
       return null;
@@ -133,8 +138,13 @@ class CacheService {
       if (!data) return null;
       
       const parsed = JSON.parse(data);
+      
+      // 🔥 Re-hidratar las cartas del home también
+      const newCards = parsed.newCards.map(cardData => Card.fromApiResponse(cardData));
+      const featuredCards = parsed.featuredCards.map(cardData => Card.fromApiResponse(cardData));
+      
       console.log(`✅ Cartas de inicio cargadas desde cache`);
-      return parsed;
+      return { newCards, featuredCards };
     } catch (error) {
       console.error('Error reading home cache:', error);
       return null;
@@ -153,6 +163,23 @@ class CacheService {
       return true;
     } catch (error) {
       console.error('Error saving home cache:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Limpia todo el cache
+   */
+  clearCache() {
+    try {
+      localStorage.removeItem(this.cacheKey);
+      localStorage.removeItem(this.cacheTimeKey);
+      localStorage.removeItem(STORAGE_KEYS.HOME_CACHE);
+      localStorage.removeItem(STORAGE_KEYS.HOME_CACHE_TIME);
+      console.log('🗑️ Cache limpiado');
+      return true;
+    } catch (error) {
+      console.error('Error clearing cache:', error);
       return false;
     }
   }

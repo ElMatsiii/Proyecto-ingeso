@@ -13,8 +13,8 @@ export const APP_CONFIG = {
   PAGE_SIZE: 40,
   MAX_CONCURRENCY: 8,
   FEATURED_CARDS: 7,
-  NEW_CARDS: 10, // ✅ Cambiado de 7 a 10
-  RECOMMENDED_CARDS: 8
+  NEW_CARDS: 10,
+  RECOMMENDED_CARDS: 10
 };
 
 export const STORAGE_KEYS = {

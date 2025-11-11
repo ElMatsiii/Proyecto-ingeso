@@ -2,6 +2,7 @@
 
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
+import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
 
 export class CarritoController {
   constructor() {
@@ -30,17 +31,28 @@ export class CarritoController {
     }
 
     // Renderizar items
-    this.container.innerHTML = items.map((item, index) => `
-      <div class="cart-item">
-        <img src="${item.imagen}" alt="${item.nombre}"
-             onerror="this.src='../assets/images/no-imagen.png'">
-        <div>
-          <h3>${item.nombre}</h3>
-          <p>Precio: $${item.precio}</p>
-          <button class="btn remove" data-index="${index}">Borrar</button>
+    this.container.innerHTML = items.map((item, index) => {
+      // 🔥 Procesar la URL de imagen correctamente
+      let imageUrl = item.imagen;
+      
+      // Si la imagen no tiene extensión, construirla correctamente
+      if (imageUrl && !imageUrl.endsWith('.jpg') && !imageUrl.endsWith('.png')) {
+        imageUrl = buildImageUrl(imageUrl);
+      }
+      
+      return `
+        <div class="cart-item">
+          <img src="${imageUrl}" 
+               alt="${item.nombre}"
+               onerror="this.onerror=null; this.src='../assets/images/no-imagen.png'">
+          <div>
+            <h3>${item.nombre}</h3>
+            <p>Precio: $${item.precio}</p>
+            <button class="btn remove" data-index="${index}">Borrar</button>
+          </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     // Actualizar total
     const total = this.manageCartUseCase.getTotal();
