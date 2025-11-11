@@ -26,8 +26,8 @@ export class HomeController {
     try {
       this.loading.show();
       
-      // Obtener una muestra más pequeña pero suficiente (200 cartas)
-      const allCardsBrief = await this.getCardsUseCase.execute(200);
+      // Obtener una muestra más pequeña pero suficiente
+      const allCardsBrief = await this.getCardsUseCase.execute(150);
       
       // Obtener detalles completos de todas para poder filtrar por rareza
       const allCardsDetailed = await this.getCardsUseCase.executeWithDetails(allCardsBrief);
