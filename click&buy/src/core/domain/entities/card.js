@@ -1,5 +1,3 @@
-// src/core/domain/entities/Card.js
-
 export class Card {
   constructor({
     id,
@@ -44,16 +42,13 @@ export class Card {
   }
 
   toCartItem() {
-    // 🔥 Construir URL de imagen de alta calidad para el carrito
     let imageUrl = this.image;
     
     if (imageUrl) {
-      // Si no termina en una extensión de imagen, agregar /high.jpg
       if (!imageUrl.endsWith('.jpg') && !imageUrl.endsWith('.png') && !imageUrl.endsWith('.webp')) {
         imageUrl = `${imageUrl}/high.jpg`;
       }
       
-      // Asegurar que use /es/ en lugar de /en/
       if (imageUrl.includes('/en/')) {
         imageUrl = imageUrl.replace('/en/', '/es/');
       }

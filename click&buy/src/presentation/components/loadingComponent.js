@@ -1,5 +1,3 @@
-// src/presentation/components/LoadingComponent.js
-
 export class LoadingComponent {
   constructor(elementId) {
     this.element = document.getElementById(elementId);

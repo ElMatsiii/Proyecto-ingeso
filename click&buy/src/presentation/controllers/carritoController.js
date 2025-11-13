@@ -1,5 +1,3 @@
-// src/presentation/controllers/CarritoController.js
-
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
 import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
@@ -30,12 +28,10 @@ export class CarritoController {
       return;
     }
 
-    // Renderizar items
+    //Renderizar items
     this.container.innerHTML = items.map((item, index) => {
-      // 🔥 Procesar la URL de imagen correctamente
       let imageUrl = item.imagen;
       
-      // Si la imagen no tiene extensión, construirla correctamente
       if (imageUrl && !imageUrl.endsWith('.jpg') && !imageUrl.endsWith('.png')) {
         imageUrl = buildImageUrl(imageUrl);
       }
@@ -54,11 +50,9 @@ export class CarritoController {
       `;
     }).join('');
 
-    // Actualizar total
     const total = this.manageCartUseCase.getTotal();
     this.totalElement.textContent = `$${total.toFixed(2)}`;
-
-    // Event listeners para botones de eliminar
+    
     this.container.querySelectorAll('.remove').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const index = parseInt(e.target.getAttribute('data-index'));

@@ -1,8 +1,4 @@
-// src/shared/utils/arrayUtils.js
-
-/**
- * Mezcla aleatoriamente un array (Fisher-Yates shuffle)
- */
+/*Mezcla aleatoriamente un array*/
 export function shuffle(array) {
   const copy = [...array];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -12,16 +8,12 @@ export function shuffle(array) {
   return copy;
 }
 
-/**
- * Toma n elementos aleatorios de un array
- */
+/*Toma n elementos aleatorios de un array*/
 export function takeRandom(array, n) {
   return shuffle(array).slice(0, n);
 }
 
-/**
- * Divide un array en chunks de tamaño específico
- */
+/*Divide un array en chunks de tamaño específico*/
 export function chunk(array, size) {
   const chunks = [];
   for (let i = 0; i < array.length; i += size) {
@@ -30,9 +22,7 @@ export function chunk(array, size) {
   return chunks;
 }
 
-/**
- * Agrupa elementos por una propiedad
- */
+/*Agrupa elementos por una propiedad*/
 export function groupBy(array, key) {
   return array.reduce((result, item) => {
     const group = item[key];

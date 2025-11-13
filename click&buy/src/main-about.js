@@ -1,7 +1,5 @@
-// src/main-about.js
-
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('✅ Inicializando Click & Buy - About');
+  console.log('Inicializando Click & Buy - About');
   
   const form = document.getElementById('contactForm');
   

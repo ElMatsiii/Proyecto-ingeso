@@ -1,5 +1,3 @@
-// src/core/usecases/GetCards.js
-
 import { shuffle } from '../../shared/utils/arrayUtils.js';
 import { APP_CONFIG } from '../../shared/config/constants.js';
 
@@ -8,9 +6,7 @@ export class GetCards {
     this.cardRepository = cardRepository;
   }
 
-  /**
-   * Obtiene una muestra aleatoria de cartas
-   */
+  /*Obtiene una muestra aleatoria de cartas*/
   async execute(count = APP_CONFIG.POOL_SIZE) {
     try {
       const allCards = await this.cardRepository.getAllCards();
@@ -22,9 +18,7 @@ export class GetCards {
     }
   }
 
-  /**
-   * Obtiene cartas para la página de inicio
-   */
+  /*Obtiene cartas para la página de inicio*/
   async executeForHome() {
     try {
       const allCards = await this.cardRepository.getAllCards();
@@ -43,9 +37,7 @@ export class GetCards {
     }
   }
 
-  /**
-   * Obtiene detalles completos de múltiples cartas
-   */
+  /*Obtiene detalles completos de múltiples cartas*/
   async executeWithDetails(cardBriefs) {
     try {
       return await this.cardRepository.getCardsByIds(cardBriefs);

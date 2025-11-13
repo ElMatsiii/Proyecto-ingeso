@@ -1,9 +1,4 @@
-// src/core/domain/repositories/CardRepository.js
 
-/**
- * Interfaz del repositorio de cartas
- * Define el contrato que debe cumplir cualquier implementación
- */
 export class CardRepository {
   /**
    * Obtiene todas las cartas disponibles

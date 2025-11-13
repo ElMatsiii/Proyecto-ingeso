@@ -1,5 +1,3 @@
-// src/infrastructure/api/TCGdexAPI.js
-
 import { API_CONFIG, APP_CONFIG } from '../../shared/config/constants.js';
 
 export class TCGdexAPI {
@@ -8,9 +6,7 @@ export class TCGdexAPI {
     this.maxConcurrency = APP_CONFIG.MAX_CONCURRENCY;
   }
 
-  /**
-   * Realiza una petición GET a la API
-   */
+  /*Realiza una petición GET a la API*/
   async get(endpoint) {
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`);
@@ -26,24 +22,18 @@ export class TCGdexAPI {
     }
   }
 
-  /**
-   * Obtiene la lista de todas las cartas (versión resumida)
-   */
+  /*Obtiene la lista de todas las cartas (versión resumida)*/
   async fetchAllCards() {
     const data = await this.get(API_CONFIG.ENDPOINTS.CARDS);
     return Array.isArray(data) ? data : [];
   }
 
-  /**
-   * Obtiene el detalle completo de una carta
-   */
+  /*Obtiene el detalle completo de una carta*/
   async fetchCardDetail(id) {
     return await this.get(API_CONFIG.ENDPOINTS.CARD_DETAIL(id));
   }
 
-  /**
-   * Obtiene detalles de múltiples cartas con concurrencia controlada
-   */
+  /*Obtiene detalles de múltiples cartas con concurrencia controlada*/
   async fetchMultipleCardDetails(cardBriefs) {
     const results = [];
     let index = 0;
@@ -62,7 +52,7 @@ export class TCGdexAPI {
       }
     };
 
-    // Ejecutar múltiples workers en paralelo
+    //Ejecutar múltiples workers en paralelo
     const workers = Array.from(
       { length: this.maxConcurrency },
       () => worker()

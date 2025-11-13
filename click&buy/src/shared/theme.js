@@ -1,10 +1,8 @@
-// src/shared/theme.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const themeBtn = document.getElementById('themeBtn');
 
-  // Leer preferencia guardada
+  //Leer preferencia guardada
   const savedTheme = localStorage.getItem('theme');
 
   if (savedTheme === 'dark') {
@@ -14,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeBtn) themeBtn.textContent = '🌙';
   }
 
-  // Cambiar tema
+  //Cambiar tema
   themeBtn?.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     const isDark = body.classList.contains('dark-mode');

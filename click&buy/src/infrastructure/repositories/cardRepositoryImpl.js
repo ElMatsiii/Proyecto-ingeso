@@ -1,5 +1,3 @@
-// src/infrastructure/repositories/CardRepositoryImpl.js
-
 import { CardRepository } from '../../core/domain/repositories/cardRepository.js';
 import { Card } from '../../core/domain/entities/card.js';
 import { TCGdexAPI } from '../api/TCGdexAPI.js';

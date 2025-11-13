@@ -1,5 +1,3 @@
-// src/core/usecases/FilterCards.js
-
 import { APP_CONFIG } from '../../shared/config/constants.js';
 
 export class FilterCards {
@@ -7,9 +5,7 @@ export class FilterCards {
     this.cardRepository = cardRepository;
   }
 
-  /**
-   * Aplica filtros a las cartas
-   */
+  /*aplicar los filtros a las cartas*/
   async execute(filters) {
     try {
       const cards = await this.cardRepository.searchCards(filters);
@@ -29,9 +25,7 @@ export class FilterCards {
     }
   }
 
-  /**
-   * Pagina los resultados
-   */
+  /*muestra las cartas ya filtradas*/
   paginate(cards, page = 1) {
     const pageSize = APP_CONFIG.PAGE_SIZE;
     const start = (page - 1) * pageSize;
@@ -46,9 +40,7 @@ export class FilterCards {
     };
   }
 
-  /**
-   * Obtiene los tipos únicos de un conjunto de cartas
-   */
+  /*obtiene los tipos de las cartas*/
   getUniqueTypes(cards) {
     const types = new Set();
     cards.forEach(card => {

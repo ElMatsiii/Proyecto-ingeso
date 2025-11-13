@@ -1,6 +1,4 @@
-/* assets/css/style.css */
-
-/* ===== ESTRUCTURA BASE ===== */
+/*ESTRUCTURA BASE*/
 html, body {
   height: 100%;
   margin: 0;
@@ -16,7 +14,7 @@ main, section {
   margin-top: auto;
 }
 
-/* ===== VARIABLES ===== */
+/*VARIABLES*/
 :root {
   --primary: #000;
   --accent: #ffcb05;
@@ -28,7 +26,7 @@ main, section {
   --transition: 0.2s ease;
 }
 
-/* ===== RESET ===== */
+/*RESET*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -42,7 +40,7 @@ body {
   line-height: 1.5;
 }
 
-/* ===== CONTAINER ===== */
+/*CONTAINER*/
 .container {
   width: 90%;
   max-width: 1200px;
@@ -53,7 +51,7 @@ body {
   padding: 2rem 0;
 }
 
-/* ===== HEADER ===== */
+/*HEADER*/
 .site-header {
   background: var(--primary);
   color: #fff;
@@ -107,7 +105,7 @@ body {
   transform: scale(1.2);
 }
 
-/* ===== HERO ===== */
+/*HERO*/
 .hero {
   position: relative;
   height: 60vh;
@@ -117,7 +115,7 @@ body {
   justify-content: center;
   color: #fff;
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
-              url('../images/banner.jpg') center/cover no-repeat;
+  url('../images/banner.jpg') center/cover no-repeat;
 }
 
 .hero-overlay {
@@ -147,7 +145,7 @@ body {
   font-weight: bold;
 }
 
-/* ===== BOTONES ===== */
+/*BOTONES*/
 .btn {
   background: var(--primary);
   color: white;
@@ -187,7 +185,7 @@ body {
   background: #ffd633;
 }
 
-/* ===== GRID DE CARTAS ===== */
+/*GRID DE CARTAS*/
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -201,7 +199,7 @@ body {
   gap: 1.5rem;
 }
 
-/* ===== CARD ===== */
+/*CARD*/
 .card {
   background: #fff;
   border-radius: var(--radius);
@@ -256,10 +254,10 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===== PRODUCTOS DESTACADOS - ACTUALIZACIÓN ===== */
+/*PRODUCTOS DESTACADOS - ACTUALIZACIÓN*/
 .featured-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* ✅ Grid de 2 columnas iguales */
+  grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: start;
   gap: 2rem;
@@ -291,7 +289,7 @@ body {
   object-fit: contain;
 }
 
-/* ✅ ACTUALIZADO: Grid de cartas mini ocupa el mismo espacio */
+/*Grid de cartas mini ocupa el mismo espacio*/
 .featured-side {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -301,7 +299,7 @@ body {
   max-width: 600px;
 }
 
-/* ✅ ACTUALIZADO: Cartas mini más grandes */
+/*Cartas mini más grandes */
 .featured-mini {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
@@ -316,7 +314,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ✅ ACTUALIZADO: Imágenes mini más grandes */
+/*Imágenes mini más grandes */
 .featured-mini img {
   width: 100%;
   max-width: 160px;
@@ -335,7 +333,7 @@ body {
 .featured-mini .btn-mini {
   margin-top: 0.5rem;
 }
-/* ===== FILTROS ===== */
+/*FILTROS*/
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -356,7 +354,7 @@ body {
   padding: 0.5rem 1rem;
 }
 
-/* ===== PAGINACIÓN ===== */
+/*PAGINACIÓN*/
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -369,7 +367,7 @@ body {
   font-weight: 600;
 }
 
-/* ===== LOADING ===== */
+/*LOADING*/
 .loading {
   text-align: center;
   padding: 2rem;
@@ -387,11 +385,11 @@ body {
 
 @keyframes spin {
   to {
-    transform: rotate(360deg);
+ transform: rotate(360deg);
   }
 }
 
-/* ===== DETALLE ===== */
+/*DETALLE*/
 .detalle-card {
   display: flex;
   flex-wrap: wrap;
@@ -452,7 +450,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* ===== CARRITO ===== */
+/*CARRITO*/
 .cart-item {
   display: flex;
   align-items: center;
@@ -478,7 +476,7 @@ body {
   margin-top: 1.5rem;
 }
 
-/* ===== ABOUT ===== */
+/*ABOUT*/
 .about {
   display: flex;
   align-items: center;
@@ -518,7 +516,7 @@ textarea {
   min-height: 120px;
 }
 
-/* ===== FOOTER ===== */
+/*FOOTER*/
 .site-footer {
   background: #000;
   color: #fff;
@@ -527,7 +525,7 @@ textarea {
   margin-top: 2rem;
 }
 
-/* ===== MODO OSCURO ===== */
+/*MODO OSCURO*/
 body.dark-mode {
   --bg: #121212;
   --text: #f5f5f5;
@@ -578,44 +576,44 @@ body.dark-mode select {
   border-color: #444;
 }
 
-/* ===== RESPONSIVE ===== */
+/*MEDIA-QUERY*/
 @media (max-width: 768px) {
   .nav {
-    flex-direction: column;
-    gap: 1rem;
+ flex-direction: column;
+ gap: 1rem;
   }
 
   .menu {
-    flex-wrap: wrap;
-    justify-content: center;
+ flex-wrap: wrap;
+ justify-content: center;
   }
 
   .hero-overlay h1 {
-    font-size: 1.8rem;
+ font-size: 1.8rem;
   }
 
   .featured-grid {
-    flex-direction: column;
-    align-items: center;
+ flex-direction: column;
+ align-items: center;
   }
 
   .featured-side {
-    grid-template-columns: repeat(2, 1fr);
+ grid-template-columns: repeat(2, 1fr);
   }
 
   .about {
-    flex-direction: column;
+ flex-direction: column;
   }
 
   .row {
-    flex-direction: column;
+ flex-direction: column;
   }
 
   .detalle-card {
-    flex-direction: column;
+ flex-direction: column;
   }
 
   .detalle-buttons {
-    flex-direction: column;
+ flex-direction: column;
   }
 }

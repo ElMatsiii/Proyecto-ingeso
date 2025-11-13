@@ -1,5 +1,3 @@
-// src/shared/config/constants.js
-
 export const API_CONFIG = {
   BASE_URL: 'https://api.tcgdex.net/v2/es',
   ENDPOINTS: {
@@ -66,9 +64,7 @@ export const TYPE_TRANSLATIONS_REVERSE = {
   hada: 'Fairy'
 };
 
-// ✅ NUEVO: Rarezas altas para cartas destacadas (en inglés y español)
 export const HIGH_RARITIES = [
-  // En inglés (de la API)
   'Ultra Rare',
   'Secret Rare',
   'Hyper Rare',
@@ -90,7 +86,7 @@ export const HIGH_RARITIES = [
   'Special Illustration Rare',
   'Shiny Ultra Rare',
   'ACE SPEC Rare',
-  // En español (por si la API devuelve traducidos)
+
   'Ultra Rara',
   'Secreta Rara',
   'Hiper Rara',
@@ -106,7 +102,7 @@ export const HIGH_RARITIES = [
   'Rara Holo VSTAR',
   'Doble Rara',
   'Ilustración Rara',
-  // Términos generales que indican rareza
+
   'Holo',
   'EX',
   'GX',

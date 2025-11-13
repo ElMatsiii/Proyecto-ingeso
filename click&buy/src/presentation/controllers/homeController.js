@@ -1,5 +1,3 @@
-// src/presentation/controllers/HomeController.js
-
 import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
 import { GetCards } from '../../core/usecases/getCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -11,12 +9,12 @@ import { cacheService } from '../../shared/services/cacheService.js';
 
 export class HomeController {
   constructor() {
-    // Dependencias
+    //Dependencias
     this.cardRepository = new CardRepositoryImpl();
     this.getCardsUseCase = new GetCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     
-    // Elementos DOM
+    //Elementos DOM
     this.newCardsContainer = document.getElementById('newCards');
     this.featuredContainer = document.getElementById('featuredCards');
     this.loading = new LoadingComponent('loading');
@@ -26,13 +24,12 @@ export class HomeController {
     try {
       this.loading.show();
       
-      // Obtener una muestra más pequeña pero suficiente
       const allCardsBrief = await this.getCardsUseCase.execute(150);
       
-      // Obtener detalles completos de todas para poder filtrar por rareza
+      //Obtener detalles completos de todas para poder filtrar por rareza
       const allCardsDetailed = await this.getCardsUseCase.executeWithDetails(allCardsBrief);
       
-      // Filtrar cartas de alta rareza para destacadas
+      //Filtrar cartas de alta rareza para destacadas
       const highRarityCards = allCardsDetailed.filter(card => {
         if (!card.rarity) return false;
         const cardRarity = card.rarity.toLowerCase();
@@ -43,30 +40,29 @@ export class HomeController {
       
       console.log(`Cartas de alta rareza encontradas: ${highRarityCards.length}`);
       
-      // Si no hay suficientes de alta rareza, usar cartas no comunes
       let featuredCards;
       if (highRarityCards.length >= 7) {
         featuredCards = highRarityCards.slice(0, 7);
       } else {
-        // Filtrar al menos las que no sean "Común"
+        //Filtrar al menos las que no sean "Común"
         const nonCommonCards = allCardsDetailed.filter(card => 
           card.rarity && !card.rarity.toLowerCase().includes('común') && !card.rarity.toLowerCase().includes('common')
         );
         featuredCards = nonCommonCards.slice(0, 7);
       }
       
-      // Productos nuevos (primeras 10 cartas)
+      //Productos nuevos (primeras 10 cartas)
       const newCards = allCardsDetailed.slice(0, 10);
       
       this.renderNewCards(newCards);
       this.renderFeaturedCards(featuredCards);
       
-      // 🚀 Iniciar pre-carga del catálogo en segundo plano
+      //Iniciar pre-carga del catálogo en segundo plano
       setTimeout(() => {
         cacheService.preloadCatalog().catch(err => 
           console.warn('Pre-carga del catálogo falló:', err)
         );
-      }, 1000); // Esperar 1 segundo después de cargar la página
+      }, 1000);
       
     } catch (error) {
       console.error('Error initializing home:', error);
@@ -97,12 +93,12 @@ export class HomeController {
     
     this.featuredContainer.innerHTML = '';
     
-    // Primera carta grande
+    //Primera carta grande
     const [mainCard, ...miniCards] = cards;
     const mainElement = CardComponent.renderFeatured(mainCard, (card) => this.goToDetail(card));
     this.featuredContainer.appendChild(mainElement);
     
-    // Contenedor de cartas mini
+    //Contenedor de cartas mini
     const sideContainer = document.createElement('div');
     sideContainer.className = 'featured-side';
     

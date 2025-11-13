@@ -1,5 +1,3 @@
-// src/infrastructure/storage/LocalStorageCart.js
-
 import { STORAGE_KEYS } from '../../shared/config/constants.js';
 
 export class LocalStorageCart {
@@ -7,9 +5,7 @@ export class LocalStorageCart {
     this.storageKey = STORAGE_KEYS.CART;
   }
 
-  /**
-   * Obtiene todos los items del carrito
-   */
+  /*Obtiene todos los items del carrito*/
   getItems() {
     try {
       const data = localStorage.getItem(this.storageKey);
@@ -20,9 +16,7 @@ export class LocalStorageCart {
     }
   }
 
-  /**
-   * Guarda los items en el carrito
-   */
+  /*Guarda los items en el carrito*/
   saveItems(items) {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(items));
@@ -33,18 +27,14 @@ export class LocalStorageCart {
     }
   }
 
-  /**
-   * Añade un item al carrito
-   */
+  /*Añade un item al carrit0*/
   addItem(item) {
     const items = this.getItems();
     items.push(item);
     return this.saveItems(items);
   }
 
-  /**
-   * Elimina un item del carrito por índice
-   */
+  /*Elimina un item del carrito por índice*/
   removeItem(index) {
     const items = this.getItems();
     if (index >= 0 && index < items.length) {
@@ -54,9 +44,7 @@ export class LocalStorageCart {
     return false;
   }
 
-  /**
-   * Limpia todo el carrito
-   */
+  /*Limpia todo el carrito*/
   clear() {
     try {
       localStorage.removeItem(this.storageKey);
@@ -67,9 +55,7 @@ export class LocalStorageCart {
     }
   }
 
-  /**
-   * Calcula el total del carrito
-   */
+  /*Calcula el total del carrito*/
   getTotal() {
     const items = this.getItems();
     return items.reduce((total, item) => {
@@ -77,9 +63,7 @@ export class LocalStorageCart {
     }, 0);
   }
 
-  /**
-   * Obtiene la cantidad de items
-   */
+  /*Obtiene la cantidad de items*/
   getCount() {
     return this.getItems().length;
   }

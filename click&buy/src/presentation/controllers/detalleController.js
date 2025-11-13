@@ -1,5 +1,3 @@
-// src/presentation/controllers/DetalleController.js
-
 import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
 import { GetCardDetail } from '../../core/usecases/getCardDetail.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -79,7 +77,6 @@ export class DetalleController {
       </section>
     `;
 
-    // Event listeners
     this.container.querySelector('.add-cart')?.addEventListener('click', () => {
       this.addToCart(card);
     });

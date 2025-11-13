@@ -1,22 +1,16 @@
-// src/shared/utils/imageBuilder.js
-
 const FALLBACK_IMAGE = '../../assets/images/no-imagen.png';
 
-/**
- * Construye la URL de imagen de alta calidad
- */
+/*Construye la URL de imagen de alta calidad*/
 export function buildImageUrl(baseUrl) {
   if (!baseUrl) {
     return FALLBACK_IMAGE;
   }
 
   try {
-    // Localizar a español si viene en inglés
     const localized = baseUrl.includes('/en/') 
       ? baseUrl.replace('/en/', '/es/') 
       : baseUrl;
     
-    // Retornar URL de alta calidad
     return `${localized}/high.jpg`;
   } catch (error) {
     console.warn('Error building image URL:', error);
@@ -24,9 +18,7 @@ export function buildImageUrl(baseUrl) {
   }
 }
 
-/**
- * Configura el fallback de imagen en caso de error
- */
+/*Configura el fallback de imagen en caso de error*/
 export function setupImageFallback(imgElement) {
   if (!imgElement) return;
   
@@ -37,9 +29,7 @@ export function setupImageFallback(imgElement) {
   });
 }
 
-/**
- * Precarga una imagen
- */
+/*Precarga una imagen*/
 export function preloadImage(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();

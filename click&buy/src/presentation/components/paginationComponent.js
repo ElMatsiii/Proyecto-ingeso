@@ -1,5 +1,3 @@
-// src/presentation/components/PaginationComponent.js
-
 export class PaginationComponent {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -26,7 +24,6 @@ export class PaginationComponent {
       </button>
     `;
 
-    // Event listeners
     const prevBtn = this.container.querySelector('#prevPage');
     const nextBtn = this.container.querySelector('#nextPage');
 

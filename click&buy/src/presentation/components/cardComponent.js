@@ -1,11 +1,7 @@
-// src/presentation/components/CardComponent.js
-
 import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
 
 export class CardComponent {
-  /**
-   * Renderiza una carta estándar
-   */
+  /*Renderiza una carta estándar*/
   static render(card, options = {}) {
     const {
       showAddToCart = true,
@@ -33,7 +29,6 @@ export class CardComponent {
       </div>
     `;
 
-    // Event listeners
     if (showAddToCart && onAddToCart) {
       div.querySelector('.add-cart')?.addEventListener('click', () => onAddToCart(card));
     }
@@ -45,9 +40,7 @@ export class CardComponent {
     return div;
   }
 
-  /**
-   * Renderiza una carta mini (para destacados)
-   */
+  /*Renderiza una carta mini (para destacados)*/
   static renderMini(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-mini';
@@ -68,9 +61,7 @@ export class CardComponent {
     return div;
   }
 
-  /**
-   * Renderiza una carta grande (destacada principal)
-   */
+  /*Renderiza una carta grande (destacada principal)*/
   static renderFeatured(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-main';
