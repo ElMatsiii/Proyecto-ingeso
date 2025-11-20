@@ -17,7 +17,7 @@ export class CardComponent {
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"
-           onerror="this.src='../assets/no-imagen.png'">
+           onerror="this.src='../assets/images/no-imagen.png'">
       <div class="card-body">
         <h3>${card.name}</h3>
         <p>${card.rarity} • ${card.getTypesString()}</p>
@@ -49,7 +49,7 @@ export class CardComponent {
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"
-           onerror="this.src='../assets/no-imagen.png'">
+           onerror="this.src='../assets/images/no-imagen.png'">
       <p>${card.name}</p>
       <button class="btn-mini view-card">Ver</button>
     `;
