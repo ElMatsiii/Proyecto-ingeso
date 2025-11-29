@@ -1,3 +1,5 @@
+// src/shared/config/constants.js
+
 export const API_CONFIG = {
   BASE_URL: 'https://api.tcgdex.net/v2/es',
   ENDPOINTS: {
@@ -30,7 +32,8 @@ export const ROUTES = {
   CATALOG: 'catalogo.html',
   DETAIL: 'detalle.html',
   CART: 'carrito.html',
-  ABOUT: 'about.html'
+  ABOUT: 'about.html',
+  CHECKOUT: 'checkout.html'
 };
 
 export const TYPE_TRANSLATIONS = {
