@@ -139,7 +139,9 @@
 
 .card-input {
   font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  padding: 0.9rem;
 }
 
 .expiry-inputs {

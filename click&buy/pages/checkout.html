@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Click & Buy — Carrito</title>
+  <title>Click & Buy — Checkout</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/checkout.css">
 </head>
 <body>
   <!-- Header -->
@@ -15,7 +16,7 @@
         <a href="../index.html">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
         <a href="about.html">Acerca</a>
-        <a href="carrito.html" class="active">Carrito</a>
+        <a href="carrito.html">Carrito</a>
       </nav>
       <div class="theme-toggle">
         <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
@@ -25,29 +26,161 @@
 
   <!-- Main Content -->
   <main class="container section">
-    <h1>🛒 Tu carrito</h1>
-    <div id="cartItems"></div>
-    <div class="cart-total">
-      <h2>Total: <span id="totalPrice">$0.00</span></h2>
-      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem; flex-wrap: wrap;">
-        <button class="btn" style="background: #6b7280;" onclick="window.location.href='../index.html'">
-          ⬅ Seguir Comprando
-        </button>
-        <button class="btn" onclick="window.location.href='checkout.html'" id="checkoutBtn">
-          💳 Proceder al Pago
-        </button>
+    <h1>🛒 Finalizar Compra</h1>
+
+    <div class="checkout-container">
+      <!-- Resumen del pedido -->
+      <div class="order-summary">
+        <h2>Resumen del Pedido</h2>
+        <div id="orderItems"></div>
+        <div class="summary-totals">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>IVA (19%):</span>
+            <span id="tax">$0.00</span>
+          </div>
+          <div class="summary-row total-row">
+            <span><strong>Total:</strong></span>
+            <span id="grandTotal"><strong>$0.00</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de pago -->
+      <div class="payment-form-container">
+        <h2>Información de Pago</h2>
+        
+        <form id="paymentForm" class="payment-form" novalidate>
+          <!-- Número de tarjeta -->
+          <div class="form-group">
+            <label for="cardNumber">Número de Tarjeta *</label>
+            <div class="input-with-icon">
+              <input 
+                type="text" 
+                id="cardNumber" 
+                name="cardNumber"
+                class="input card-input"
+                placeholder="1234 5678 9012 3456"
+                maxlength="19"
+                autocomplete="cc-number"
+                required>
+              <span class="card-type-icon" id="cardTypeIcon"></span>
+            </div>
+            <span class="error-message" id="cardNumberError"></span>
+          </div>
+
+          <!-- Titular de la tarjeta -->
+          <div class="form-group">
+            <label for="cardHolder">Titular de la Tarjeta *</label>
+            <input 
+              type="text" 
+              id="cardHolder" 
+              name="cardHolder"
+              class="input"
+              placeholder="Juan Pérez García"
+              autocomplete="cc-name"
+              required>
+            <span class="error-message" id="cardHolderError"></span>
+          </div>
+
+          <!-- Fecha de expiración y CVV -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expiryMonth">Fecha de Expiración *</label>
+              <div class="expiry-inputs">
+                <select 
+                  id="expiryMonth" 
+                  name="expiryMonth"
+                  class="input"
+                  autocomplete="cc-exp-month"
+                  required>
+                  <option value="">MM</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <span class="separator">/</span>
+                <select 
+                  id="expiryYear" 
+                  name="expiryYear"
+                  class="input"
+                  autocomplete="cc-exp-year"
+                  required>
+                  <option value="">AAAA</option>
+                </select>
+              </div>
+              <span class="error-message" id="expiryError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="cvv">CVV *</label>
+              <input 
+                type="text" 
+                id="cvv" 
+                name="cvv"
+                class="input"
+                placeholder="123"
+                maxlength="4"
+                autocomplete="cc-csc"
+                required>
+              <span class="error-message" id="cvvError"></span>
+              <small class="help-text">3-4 dígitos en el reverso</small>
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='carrito.html'">
+              Volver al Carrito
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Pagar Ahora
+            </button>
+          </div>
+        </form>
+
+        <!-- Loading overlay -->
+        <div id="processingOverlay" class="processing-overlay" style="display: none;">
+          <div class="spinner"></div>
+          <p>Procesando pago...</p>
+        </div>
       </div>
     </div>
   </main>
 
+  <!-- Modal de éxito -->
+  <div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content success">
+      <span class="modal-icon"></span>
+      <h2>¡Pago Exitoso!</h2>
+      <p>Tu compra ha sido procesada correctamente.</p>
+      <p><strong>ID de Transacción:</strong> <span id="transactionId"></span></p>
+      <button class="btn" onclick="window.location.href='../index.html'">
+        Volver al Inicio
+      </button>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
-      <p>© 2025 Click & Buy | Carrito de compras</p>
+      <p>© 2025 Click & Buy | Pago seguro</p>
     </div>
   </footer>
 
-  <script type="module" src="../src/main-carrito.js"></script>
+  <script type="module" src="../src/main-checkout.js"></script>
   <script src="../src/shared/theme.js"></script>
 </body>
 </html>

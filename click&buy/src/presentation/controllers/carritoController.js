@@ -71,7 +71,7 @@ export class CarritoController {
             <h3>${item.nombre}</h3>
             <p class="price">$${parseFloat(item.precio).toFixed(2)}</p>
           </div>
-          <button class="btn remove" data-index="${index}" style="background: #eed922ff;">
+          <button class="btn" data-index="${index}">
             Eliminar
           </button>
         </div>
