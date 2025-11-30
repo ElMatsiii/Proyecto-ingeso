@@ -1,14 +1,18 @@
-// src/presentation/controllers/checkoutController.js
-
+// src/presentation/controllers/checkoutController.js - ACTUALIZADO
 import { ProcessPayment } from '../../core/usecases/processPayment.js';
 import { ValidateCard } from '../../core/usecases/validateCard.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
+import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
 
 export class CheckoutController {
   constructor() {
-    this.processPaymentUseCase = new ProcessPayment(new LocalStorageCart());
+    const cartStorage = new LocalStorageCart();
+    const cardRepository = new NeonCardRepository();
+    
+    this.processPaymentUseCase = new ProcessPayment(cartStorage, cardRepository);
     this.validateCardUseCase = new ValidateCard();
+    this.cardRepository = cardRepository;
     
     // Elementos DOM
     this.form = document.getElementById('paymentForm');
@@ -45,6 +49,9 @@ export class CheckoutController {
       return;
     }
 
+    // Verificar stock disponible
+    await this.verifyStock(summary.items);
+
     // Renderizar resumen del pedido
     this.renderOrderSummary(summary);
     
@@ -53,6 +60,23 @@ export class CheckoutController {
     
     // Configurar event listeners
     this.setupEventListeners();
+  }
+
+  async verifyStock(items) {
+    try {
+      const cardIds = items.map(item => item.id);
+      const stockStatus = await this.cardRepository.checkStock(cardIds);
+      
+      const outOfStock = stockStatus.filter(item => !item.available);
+      
+      if (outOfStock.length > 0) {
+        alert(`⚠️ Los siguientes productos ya no tienen stock:\n${outOfStock.map(i => i.name).join('\n')}\n\nSerás redirigido al carrito.`);
+        window.location.href = 'carrito.html';
+      }
+    } catch (error) {
+      console.error('Error verificando stock:', error);
+      alert('Error al verificar disponibilidad. Por favor, intenta nuevamente.');
+    }
   }
 
   renderOrderSummary(summary) {
@@ -101,7 +125,6 @@ export class CheckoutController {
       this.expiryYearSelect.appendChild(firstOption);
     }
     
-    // Agregar los próximos 15 años
     for (let i = 0; i < 15; i++) {
       const year = currentYear + i;
       const option = document.createElement('option');
@@ -112,19 +135,16 @@ export class CheckoutController {
   }
 
   setupEventListeners() {
-    // Formatear número de tarjeta mientras se escribe
     this.cardNumberInput?.addEventListener('input', (e) => {
       this.formatCardNumber(e);
       this.updateCardTypeIcon();
       this.validateField('cardNumber');
     });
 
-    // Validar titular
     this.cardHolderInput?.addEventListener('blur', () => {
       this.validateField('cardHolder');
     });
 
-    // Validar fecha de expiración
     this.expiryMonthSelect?.addEventListener('change', () => {
       this.validateField('expiry');
     });
@@ -133,13 +153,11 @@ export class CheckoutController {
       this.validateField('expiry');
     });
 
-    // Solo números en CVV
     this.cvvInput?.addEventListener('input', (e) => {
       e.target.value = e.target.value.replace(/\D/g, '');
       this.validateField('cvv');
     });
 
-    // Submit del formulario
     this.form?.addEventListener('submit', (e) => {
       e.preventDefault();
       this.handleSubmit();
@@ -243,18 +261,14 @@ export class CheckoutController {
   }
 
   async handleSubmit() {
-    // Validar todos los campos
     if (!this.validateAllFields()) {
       alert('Por favor, corrige los errores en el formulario');
       return;
     }
 
-    // Mostrar overlay de procesamiento
     this.showProcessing(true);
 
     const cardData = this.getCardData();
-    
-    // Procesar el pago
     const result = await this.processPaymentUseCase.execute(cardData);
 
     this.showProcessing(false);
