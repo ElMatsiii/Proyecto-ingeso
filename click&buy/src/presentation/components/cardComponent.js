@@ -1,7 +1,8 @@
-import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
-
+// src/presentation/components/cardComponent.js - CORREGIDO
 export class CardComponent {
-  /*Renderiza una carta estándar*/
+  /**
+   * Renderiza una carta estándar
+   */
   static render(card, options = {}) {
     const {
       showAddToCart = true,
@@ -13,7 +14,14 @@ export class CardComponent {
     const div = document.createElement('div');
     div.className = 'card';
     
-    const imgUrl = buildImageUrl(card.image);
+    // ✅ CORREGIDO: Usar imagen directamente sin manipular
+    const imgUrl = card.image || '../assets/images/no-imagen.png';
+    
+    // ✅ VALIDACIÓN DE STOCK
+    const hasStock = card.stock && card.stock > 0;
+    const stockMessage = hasStock 
+      ? `Stock: ${card.stock}` 
+      : 'Sin stock';
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"
@@ -21,15 +29,19 @@ export class CardComponent {
       <div class="card-body">
         <h3>${card.name}</h3>
         <p>${card.rarity} • ${card.getTypesString()}</p>
-        <p class="price"><strong>Set:</strong> ${card.getSetName()}</p>
+        <p><strong>Set:</strong> ${card.getSetName()}</p>
+        <p><strong>Precio:</strong> $${parseFloat(card.price).toFixed(2)}</p>
+        <p style="color: ${hasStock ? '#10b981' : '#ef4444'}; font-weight: 600;">${stockMessage}</p>
         <div class="card-actions">
           ${showViewDetail ? '<button class="btn view-card">Ver Detalle</button>' : ''}
-          ${showAddToCart ? '<button class="btn add-cart">Agregar</button>' : ''}
+          ${showAddToCart && hasStock ? '<button class="btn add-cart">Agregar</button>' : ''}
+          ${showAddToCart && !hasStock ? '<button class="btn" disabled style="opacity: 0.5; cursor: not-allowed;">Sin Stock</button>' : ''}
         </div>
       </div>
     `;
 
-    if (showAddToCart && onAddToCart) {
+    // Solo agregar event listener si HAY stock
+    if (showAddToCart && hasStock && onAddToCart) {
       div.querySelector('.add-cart')?.addEventListener('click', () => onAddToCart(card));
     }
 
@@ -40,12 +52,15 @@ export class CardComponent {
     return div;
   }
 
-  /*Renderiza una carta mini (para destacados)*/
+  /**
+   * Renderiza una carta mini (para destacados)
+   */
   static renderMini(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-mini';
     
-    const imgUrl = buildImageUrl(card.image);
+    // ✅ Usar imagen directamente
+    const imgUrl = card.image || '../assets/images/no-imagen.png';
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"
@@ -61,12 +76,15 @@ export class CardComponent {
     return div;
   }
 
-  /*Renderiza una carta grande (destacada principal)*/
+  /**
+   * Renderiza una carta grande (destacada principal)
+   */
   static renderFeatured(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-main';
     
-    const imgUrl = buildImageUrl(card.image);
+    // ✅ Usar imagen directamente
+    const imgUrl = card.image || '../assets/images/no-imagen.png';
     
     div.innerHTML = `
       <img src="${imgUrl}" alt="${card.name}"

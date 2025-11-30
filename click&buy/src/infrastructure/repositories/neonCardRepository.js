@@ -1,4 +1,4 @@
-// src/infrastructure/repositories/neonCardRepository.js
+// src/infrastructure/repositories/neonCardRepository.js - CORREGIDO
 import { CardRepository } from '../../core/domain/repositories/cardRepository.js';
 import { Card } from '../../core/domain/entities/card.js';
 
@@ -24,7 +24,8 @@ export class NeonCardRepository extends CardRepository {
           id: data[0].id,
           name: data[0].name,
           stock: data[0].stock,
-          price: data[0].price
+          price: data[0].price,
+          image_url: data[0].image_url
         });
       }
       
@@ -137,17 +138,12 @@ export class NeonCardRepository extends CardRepository {
     }
   }
 
+  // ✅ CORREGIDO: No manipular la URL de imagen
   mapToCard(data) {
-    let imageUrl = data.image_url;
-    
-    if (imageUrl && imageUrl.endsWith('/high.jpg')) {
-      imageUrl = imageUrl.replace('/high.jpg', '');
-    }
-    
     const mappedCard = new Card({
       id: data.id,
       name: data.name,
-      image: imageUrl,
+      image: data.image_url, // ✅ Usar URL directamente desde BD
       rarity: data.rarity,
       types: data.types || [],
       set: {
@@ -166,7 +162,8 @@ export class NeonCardRepository extends CardRepository {
       id: mappedCard.id,
       name: mappedCard.name,
       stock: mappedCard.stock,
-      price: mappedCard.price
+      price: mappedCard.price,
+      image: mappedCard.image
     });
     
     return mappedCard;
