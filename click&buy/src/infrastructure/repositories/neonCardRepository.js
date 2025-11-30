@@ -5,7 +5,6 @@ import { Card } from '../../core/domain/entities/card.js';
 export class NeonCardRepository extends CardRepository {
   constructor() {
     super();
-    // URL de tu backend
     this.baseUrl = 'http://localhost:3000/api';
   }
 
@@ -18,6 +17,17 @@ export class NeonCardRepository extends CardRepository {
       }
       
       const data = await response.json();
+      console.log('📦 Cartas recibidas del backend:', data.length);
+      
+      if (data.length > 0) {
+        console.log('🔍 Ejemplo de carta recibida:', {
+          id: data[0].id,
+          name: data[0].name,
+          stock: data[0].stock,
+          price: data[0].price
+        });
+      }
+      
       return data.map(card => this.mapToCard(card));
     } catch (error) {
       console.error('Error fetching all cards:', error);
@@ -34,6 +44,13 @@ export class NeonCardRepository extends CardRepository {
       }
       
       const data = await response.json();
+      console.log('🔍 Carta individual recibida:', {
+        id: data.id,
+        name: data.name,
+        stock: data.stock,
+        price: data.price
+      });
+      
       return this.mapToCard(data);
     } catch (error) {
       console.error(`Error fetching card ${id}:`, error);
@@ -120,21 +137,17 @@ export class NeonCardRepository extends CardRepository {
     }
   }
 
-  // CORRECCIÓN: Mapear correctamente la URL de imagen
   mapToCard(data) {
-    // La BD guarda la URL completa con /high.jpg
-    // Necesitamos quitarle /high.jpg para que buildImageUrl funcione
     let imageUrl = data.image_url;
     
-    // Si la URL termina en /high.jpg, quitarlo
     if (imageUrl && imageUrl.endsWith('/high.jpg')) {
       imageUrl = imageUrl.replace('/high.jpg', '');
     }
     
-    return new Card({
+    const mappedCard = new Card({
       id: data.id,
       name: data.name,
-      image: imageUrl, // Ahora es la URL base
+      image: imageUrl,
       rarity: data.rarity,
       types: data.types || [],
       set: {
@@ -146,7 +159,16 @@ export class NeonCardRepository extends CardRepository {
       description: data.description,
       attacks: data.attacks || [],
       price: parseFloat(data.price),
-      stock: data.stock
+      stock: parseInt(data.stock) || 0
     });
+    
+    console.log('🗺️ Carta mapeada:', {
+      id: mappedCard.id,
+      name: mappedCard.name,
+      stock: mappedCard.stock,
+      price: mappedCard.price
+    });
+    
+    return mappedCard;
   }
 }

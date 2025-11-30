@@ -1,3 +1,4 @@
+// src/core/domain/entities/card.js
 export class Card {
   constructor({
     id,
@@ -10,7 +11,8 @@ export class Card {
     stage,
     description,
     attacks = [],
-    price
+    price,
+    stock
   }) {
     this.id = id;
     this.name = name;
@@ -23,6 +25,10 @@ export class Card {
     this.description = description;
     this.attacks = attacks;
     this.price = price || this.generatePrice();
+    this.stock = stock !== undefined ? parseInt(stock) : 0;
+    
+    // Debug temporal
+    console.log(`✨ Card creada: ${this.name} - Stock: ${this.stock}, Price: ${this.price}`);
   }
 
   generatePrice() {
@@ -58,7 +64,8 @@ export class Card {
       id: this.id,
       nombre: this.name,
       imagen: imageUrl,
-      precio: this.price
+      precio: this.price,
+      stock: this.stock
     };
   }
 

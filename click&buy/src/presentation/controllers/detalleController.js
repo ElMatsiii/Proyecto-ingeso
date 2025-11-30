@@ -1,3 +1,4 @@
+// src/presentation/controllers/detalleController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCardDetail } from '../../core/usecases/getCardDetail.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -49,6 +50,12 @@ export class DetalleController {
     
     const imgUrl = buildImageUrl(card.image);
     
+    // Verificar stock - CORRECCIÓN: usar > 0 en vez de >= 0
+    const hasStock = card.stock && card.stock > 0;
+    const stockInfo = hasStock
+      ? `<p style="color: #10b981; font-weight: 600;"><strong>Stock disponible:</strong> ${card.stock} unidades</p>` 
+      : '<p style="color: #ef4444; font-weight: 600;"><strong>Sin stock</strong></p>';
+    
     this.container.innerHTML = `
       <div class="detalle-card">
         <div class="detalle-img">
@@ -62,10 +69,14 @@ export class DetalleController {
           <p><strong>Set:</strong> ${card.getSetName()}</p>
           <p><strong>HP:</strong> ${card.hp || '—'}</p>
           <p><strong>Etapa:</strong> ${card.stage || '—'}</p>
+          <p><strong>Precio:</strong> ${parseFloat(card.price).toFixed(2)}</p>
+          ${stockInfo}
           <p><strong>Descripción:</strong> ${card.description || 'Sin descripción disponible.'}</p>
           ${this.renderAttacks(card)}
           <div class="detalle-buttons">
-            <button class="btn add-cart">Agregar al carrito</button>
+            ${hasStock
+              ? '<button class="btn add-cart">Agregar al carrito</button>' 
+              : '<button class="btn" disabled style="opacity: 0.5; cursor: not-allowed; background: #6b7280;">Sin stock</button>'}
             <button class="btn back-btn">⬅ Volver</button>
           </div>
         </div>
@@ -77,9 +88,15 @@ export class DetalleController {
       </section>
     `;
 
-    this.container.querySelector('.add-cart')?.addEventListener('click', () => {
-      this.addToCart(card);
-    });
+    // CORRECCIÓN: Solo agregar event listener si HAY stock
+    if (hasStock) {
+      const addToCartBtn = this.container.querySelector('.add-cart');
+      if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', () => {
+          this.addToCart(card);
+        });
+      }
+    }
 
     this.container.querySelector('.back-btn')?.addEventListener('click', () => {
       window.history.back();
@@ -134,9 +151,17 @@ export class DetalleController {
   }
 
   addToCart(card) {
+    // Validación adicional: verificar stock antes de agregar
+    if (!card.stock || card.stock <= 0) {
+      alert('⚠️ Esta carta no tiene stock disponible');
+      return;
+    }
+    
     const result = this.manageCartUseCase.addCard(card);
     if (result.success) {
       alert(result.message);
+    } else {
+      alert('❌ No se pudo agregar la carta al carrito');
     }
   }
 

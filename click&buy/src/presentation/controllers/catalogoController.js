@@ -1,5 +1,5 @@
+// src/presentation/controllers/catalogoController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
-import { GetCards } from '../../core/usecases/getCards.js';
 import { FilterCards } from '../../core/usecases/filterCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
@@ -7,30 +7,27 @@ import { CardComponent } from '../components/cardComponent.js';
 import { LoadingComponent } from '../components/loadingComponent.js';
 import { PaginationComponent } from '../components/paginationComponent.js';
 import { STORAGE_KEYS, ROUTES, TYPE_TRANSLATIONS } from '../../shared/config/constants.js';
-import { takeRandom } from '../../shared/utils/arrayUtils.js';
-import { cacheService } from '../../shared/services/cacheService.js';
 
 export class CatalogoController {
   constructor() {
-    //Dependencias
+    // Dependencias
     this.cardRepository = new NeonCardRepository();
-    this.getCardsUseCase = new GetCards(this.cardRepository);
     this.filterCardsUseCase = new FilterCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     
-    //Elementos DOM
+    // Elementos DOM
     this.gridContainer = document.getElementById('cardsGrid');
     this.loading = new LoadingComponent('loading');
     this.pagination = new PaginationComponent('pagination');
     
-    //Filtros
+    // Filtros
     this.filterNameInput = document.getElementById('filterName');
     this.filterTypeSelect = document.getElementById('filterType');
     this.filterSetInput = document.getElementById('filterSet');
     this.applyFiltersBtn = document.getElementById('applyFilters');
     this.clearFiltersBtn = document.getElementById('clearFilters');
     
-    //Estado
+    // Estado
     this.allCards = [];
     this.filteredCards = [];
     this.currentPage = 1;
@@ -40,15 +37,17 @@ export class CatalogoController {
     try {
       this.loading.show();
       
-      //Intentar cargar desde cache primero
-      this.allCards = await cacheService.getCatalogCards();
+      // Cargar todas las cartas con stock disponible
+      this.allCards = await this.cardRepository.getAllCards();
       this.filteredCards = [...this.allCards];
       
-      //Configurar filtros
+      console.log(`Cartas cargadas en catálogo: ${this.allCards.length}`);
+      
+      // Configurar filtros
       this.populateTypeFilter();
       this.setupEventListeners();
       
-      //Renderizar primera página
+      // Renderizar primera página
       this.renderPage(1);
     } catch (error) {
       console.error('Error initializing catalog:', error);
@@ -121,17 +120,17 @@ export class CatalogoController {
     this.currentPage = page;
     const paginationData = this.filterCardsUseCase.paginate(this.filteredCards, page);
     
-    //Limpiar grid
+    // Limpiar grid
     this.gridContainer.innerHTML = '';
     
     if (paginationData.cards.length === 0) {
       this.gridContainer.innerHTML = 
-        '<p style="text-align:center;">No se encontraron cartas.</p>';
+        '<p style="text-align:center;">No se encontraron cartas con stock disponible.</p>';
       this.pagination.clear();
       return;
     }
     
-    //Renderizar cartas
+    // Renderizar cartas
     paginationData.cards.forEach(card => {
       const cardElement = CardComponent.render(card, {
         showAddToCart: true,
@@ -143,14 +142,22 @@ export class CatalogoController {
       this.gridContainer.appendChild(cardElement);
     });
     
-    //Renderizar paginación
+    // Renderizar paginación
     this.pagination.render(paginationData, (page) => this.renderPage(page));
   }
 
   addToCart(card) {
+    // Validación: verificar que la carta tenga stock antes de agregar
+    if (!card.stock || card.stock <= 0) {
+      alert('⚠️ Esta carta no tiene stock disponible');
+      return;
+    }
+    
     const result = this.manageCartUseCase.addCard(card);
     if (result.success) {
       alert(result.message);
+    } else {
+      alert('❌ No se pudo agregar la carta al carrito');
     }
   }
 

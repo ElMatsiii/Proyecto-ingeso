@@ -1,3 +1,4 @@
+// src/presentation/controllers/homeController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCards } from '../../core/usecases/getCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -5,16 +6,14 @@ import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.
 import { CardComponent } from '../components/cardComponent.js';
 import { LoadingComponent } from '../components/loadingComponent.js';
 import { STORAGE_KEYS, ROUTES, HIGH_RARITIES } from '../../shared/config/constants.js';
-import { cacheService } from '../../shared/services/cacheService.js';
 
 export class HomeController {
   constructor() {
-    //Dependencias
+    // CAMBIO: Usar NeonCardRepository en vez de CardRepositoryImpl
     this.cardRepository = new NeonCardRepository();
     this.getCardsUseCase = new GetCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     
-    //Elementos DOM
     this.newCardsContainer = document.getElementById('newCards');
     this.featuredContainer = document.getElementById('featuredCards');
     this.loading = new LoadingComponent('loading');
@@ -24,13 +23,16 @@ export class HomeController {
     try {
       this.loading.show();
       
-      const allCardsBrief = await this.getCardsUseCase.execute(150);
+      // Obtener todas las cartas con stock de Neon
+      const allCards = await this.cardRepository.getAllCards();
       
-      //Obtener detalles completos de todas para poder filtrar por rareza
-      const allCardsDetailed = await this.getCardsUseCase.executeWithDetails(allCardsBrief);
+      console.log(`Total cartas con stock: ${allCards.length}`);
       
-      //Filtrar cartas de alta rareza para destacadas
-      const highRarityCards = allCardsDetailed.filter(card => {
+      // Mezclar aleatoriamente
+      const shuffled = this.shuffleArray(allCards);
+      
+      // Filtrar cartas de alta rareza para destacadas
+      const highRarityCards = shuffled.filter(card => {
         if (!card.rarity) return false;
         const cardRarity = card.rarity.toLowerCase();
         return HIGH_RARITIES.some(rarity => 
@@ -40,29 +42,25 @@ export class HomeController {
       
       console.log(`Cartas de alta rareza encontradas: ${highRarityCards.length}`);
       
+      // Seleccionar cartas destacadas
       let featuredCards;
       if (highRarityCards.length >= 7) {
         featuredCards = highRarityCards.slice(0, 7);
       } else {
-        //Filtrar al menos las que no sean "Común"
-        const nonCommonCards = allCardsDetailed.filter(card => 
-          card.rarity && !card.rarity.toLowerCase().includes('común') && !card.rarity.toLowerCase().includes('common')
+        // Filtrar al menos las que no sean "Común"
+        const nonCommonCards = shuffled.filter(card => 
+          card.rarity && 
+          !card.rarity.toLowerCase().includes('común') && 
+          !card.rarity.toLowerCase().includes('common')
         );
         featuredCards = nonCommonCards.slice(0, 7);
       }
       
-      //Productos nuevos (primeras 10 cartas)
-      const newCards = allCardsDetailed.slice(0, 10);
+      // Productos nuevos (primeras 10 cartas aleatorias)
+      const newCards = shuffled.slice(0, 10);
       
       this.renderNewCards(newCards);
       this.renderFeaturedCards(featuredCards);
-      
-      //Iniciar pre-carga del catálogo en segundo plano
-      setTimeout(() => {
-        cacheService.preloadCatalog().catch(err => 
-          console.warn('Pre-carga del catálogo falló:', err)
-        );
-      }, 1000);
       
     } catch (error) {
       console.error('Error initializing home:', error);
@@ -70,6 +68,16 @@ export class HomeController {
     } finally {
       this.loading.hide();
     }
+  }
+
+  // Función auxiliar para mezclar array
+  shuffleArray(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
   }
 
   renderNewCards(cards) {
@@ -89,21 +97,30 @@ export class HomeController {
   }
 
   renderFeaturedCards(cards) {
-    if (!this.featuredContainer || cards.length < 7) return;
+    if (!this.featuredContainer || cards.length < 7) {
+      console.warn('No hay suficientes cartas para destacadas');
+      return;
+    }
     
     this.featuredContainer.innerHTML = '';
     
-    //Primera carta grande
+    // Primera carta grande
     const [mainCard, ...miniCards] = cards;
-    const mainElement = CardComponent.renderFeatured(mainCard, (card) => this.goToDetail(card));
+    const mainElement = CardComponent.renderFeatured(
+      mainCard, 
+      (card) => this.goToDetail(card)
+    );
     this.featuredContainer.appendChild(mainElement);
     
-    //Contenedor de cartas mini
+    // Contenedor de cartas mini
     const sideContainer = document.createElement('div');
     sideContainer.className = 'featured-side';
     
     miniCards.forEach(card => {
-      const miniElement = CardComponent.renderMini(card, (card) => this.goToDetail(card));
+      const miniElement = CardComponent.renderMini(
+        card, 
+        (card) => this.goToDetail(card)
+      );
       sideContainer.appendChild(miniElement);
     });
     

@@ -1,4 +1,4 @@
-// server.js
+// server.js - ACTUALIZADO con mejor validación de stock
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -118,7 +118,7 @@ app.post('/api/cards/check-stock', async (req, res) => {
 
 // ============ ENDPOINTS DE TRANSACCIONES ============
 
-// Procesar compra
+// Procesar compra - CON VALIDACIÓN MEJORADA
 app.post('/api/transactions', async (req, res) => {
   try {
     const {
@@ -131,21 +131,45 @@ app.post('/api/transactions', async (req, res) => {
       lastFourDigits
     } = req.body;
     
+    console.log('📦 Procesando transacción:', transactionId);
+    console.log('🛒 Items recibidos:', items.length);
+    
     // Verificar stock disponible
     const cardIds = items.map(item => item.id);
     const cards = await sql`
-      SELECT id, stock FROM cards WHERE id = ANY(${cardIds})
+      SELECT id, name, stock, price FROM cards WHERE id = ANY(${cardIds})
     `;
     
-    // Validar stock
+    console.log('📊 Cartas encontradas en BD:', cards.length);
+    
+    // Validar stock ESTRICTAMENTE
+    const stockErrors = [];
     for (const item of items) {
       const card = cards.find(c => c.id === item.id);
-      if (!card || card.stock < 1) {
-        return res.status(400).json({
-          error: `Sin stock disponible para ${item.nombre}`
-        });
+      
+      if (!card) {
+        stockErrors.push(`Carta "${item.nombre}" no encontrada en la base de datos`);
+        continue;
+      }
+      
+      console.log(`🔍 Verificando ${card.name}: stock=${card.stock}`);
+      
+      // VALIDACIÓN ESTRICTA: debe tener stock > 0
+      if (!card.stock || card.stock < 1) {
+        stockErrors.push(`"${card.name}" no tiene stock disponible (stock: ${card.stock || 0})`);
       }
     }
+    
+    // Si hay errores de stock, rechazar la transacción
+    if (stockErrors.length > 0) {
+      console.error('❌ Errores de stock:', stockErrors);
+      return res.status(400).json({
+        error: 'Stock no disponible',
+        details: stockErrors
+      });
+    }
+    
+    console.log('✅ Stock verificado correctamente');
     
     // Iniciar transacción
     // 1. Crear registro de transacción
@@ -162,6 +186,7 @@ app.post('/api/transactions', async (req, res) => {
     `;
     
     const transId = transaction[0].id;
+    console.log('💾 Transacción creada con ID:', transId);
     
     // 2. Crear items de transacción y reducir stock
     for (const item of items) {
@@ -175,13 +200,23 @@ app.post('/api/transactions', async (req, res) => {
         )
       `;
       
-      // Reducir stock
-      await sql`
+      // Reducir stock CON VALIDACIÓN
+      const result = await sql`
         UPDATE cards 
         SET stock = stock - 1 
         WHERE id = ${item.id} AND stock > 0
+        RETURNING id, stock
       `;
+      
+      if (result.length === 0) {
+        console.error(`❌ No se pudo reducir stock para ${item.nombre}`);
+        throw new Error(`Error al actualizar stock de ${item.nombre}`);
+      }
+      
+      console.log(`📉 Stock actualizado para ${item.nombre}: ${result[0].stock}`);
     }
+    
+    console.log('✅ Transacción completada exitosamente');
     
     res.json({
       success: true,
@@ -190,8 +225,11 @@ app.post('/api/transactions', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('Error processing transaction:', error);
-    res.status(500).json({ error: 'Error al procesar la compra' });
+    console.error('❌ Error processing transaction:', error);
+    res.status(500).json({ 
+      error: 'Error al procesar la compra',
+      details: error.message 
+    });
   }
 });
 
