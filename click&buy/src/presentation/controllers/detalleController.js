@@ -1,4 +1,4 @@
-import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
+import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCardDetail } from '../../core/usecases/getCardDetail.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
@@ -9,7 +9,7 @@ import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
 
 export class DetalleController {
   constructor() {
-    this.cardRepository = new CardRepositoryImpl();
+    this.cardRepository = new NeonCardRepository();
     this.getCardDetailUseCase = new GetCardDetail(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     

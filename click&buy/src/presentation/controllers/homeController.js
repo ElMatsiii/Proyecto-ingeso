@@ -1,4 +1,4 @@
-import { CardRepositoryImpl } from '../../infrastructure/repositories/cardRepositoryImpl.js';
+import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCards } from '../../core/usecases/getCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
@@ -10,7 +10,7 @@ import { cacheService } from '../../shared/services/cacheService.js';
 export class HomeController {
   constructor() {
     //Dependencias
-    this.cardRepository = new CardRepositoryImpl();
+    this.cardRepository = new NeonCardRepository();
     this.getCardsUseCase = new GetCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     

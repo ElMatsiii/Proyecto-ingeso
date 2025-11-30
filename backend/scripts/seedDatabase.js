@@ -123,19 +123,22 @@ async function seedDatabase() {
                 price = EXCLUDED.price
             `;
             
-            // Insertar ataques si existen
+            // CORRECCIÓN: Insertar ataques SOLO si existen Y tienen nombre
             if (card.attacks && card.attacks.length > 0) {
               for (const attack of card.attacks) {
-                await sql`
-                  INSERT INTO card_attacks (card_id, name, damage, effect)
-                  VALUES (
-                    ${card.id},
-                    ${attack.name},
-                    ${attack.damage || null},
-                    ${attack.effect || null}
-                  )
-                  ON CONFLICT DO NOTHING
-                `;
+                // Verificar que el ataque tenga nombre antes de insertar
+                if (attack.name && attack.name.trim().length > 0) {
+                  await sql`
+                    INSERT INTO card_attacks (card_id, name, damage, effect)
+                    VALUES (
+                      ${card.id},
+                      ${attack.name},
+                      ${attack.damage || null},
+                      ${attack.effect || null}
+                    )
+                    ON CONFLICT DO NOTHING
+                  `;
+                }
               }
             }
             

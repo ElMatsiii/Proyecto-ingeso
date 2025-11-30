@@ -5,7 +5,7 @@ import { Card } from '../../core/domain/entities/card.js';
 export class NeonCardRepository extends CardRepository {
   constructor() {
     super();
-    // URL de tu backend (ajusta según tu configuración)
+    // URL de tu backend
     this.baseUrl = 'http://localhost:3000/api';
   }
 
@@ -43,7 +43,6 @@ export class NeonCardRepository extends CardRepository {
 
   async getCardsByIds(cardIds) {
     try {
-      // Obtener todas las cartas y filtrar por IDs
       const allCards = await this.getAllCards();
       return allCards.filter(card => 
         cardIds.some(brief => brief.id === card.id)
@@ -121,12 +120,21 @@ export class NeonCardRepository extends CardRepository {
     }
   }
 
-  // Mapea los datos de la BD a la entidad Card
+  // CORRECCIÓN: Mapear correctamente la URL de imagen
   mapToCard(data) {
+    // La BD guarda la URL completa con /high.jpg
+    // Necesitamos quitarle /high.jpg para que buildImageUrl funcione
+    let imageUrl = data.image_url;
+    
+    // Si la URL termina en /high.jpg, quitarlo
+    if (imageUrl && imageUrl.endsWith('/high.jpg')) {
+      imageUrl = imageUrl.replace('/high.jpg', '');
+    }
+    
     return new Card({
       id: data.id,
       name: data.name,
-      image: data.image_url,
+      image: imageUrl, // Ahora es la URL base
       rarity: data.rarity,
       types: data.types || [],
       set: {

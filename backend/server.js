@@ -24,6 +24,11 @@ app.get('/api/cards', async (req, res) => {
     const params = [];
     let paramCount = 1;
     
+    // IMPORTANTE: Filtrar por stock PRIMERO
+    if (inStock === 'true') {
+      query += ' AND stock > 0';
+    }
+    
     if (type) {
       query += ` AND $${paramCount} = ANY(types)`;
       params.push(type);
@@ -46,10 +51,6 @@ app.get('/api/cards', async (req, res) => {
       query += ` AND LOWER(name) LIKE LOWER($${paramCount})`;
       params.push(`%${name}%`);
       paramCount++;
-    }
-    
-    if (inStock === 'true') {
-      query += ' AND stock > 0';
     }
     
     query += ' ORDER BY created_at DESC';
