@@ -1,5 +1,3 @@
-// src/main-checkout.js
-
 import { CheckoutController } from './presentation/controllers/checkoutController.js';
 
 document.addEventListener('DOMContentLoaded', () => {

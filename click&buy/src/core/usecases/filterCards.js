@@ -5,7 +5,6 @@ export class FilterCards {
     this.cardRepository = cardRepository;
   }
 
-  /*aplicar los filtros a las cartas*/
   async execute(filters) {
     try {
       const cards = await this.cardRepository.searchCards(filters);
@@ -25,7 +24,6 @@ export class FilterCards {
     }
   }
 
-  /*muestra las cartas ya filtradas*/
   paginate(cards, page = 1) {
     const pageSize = APP_CONFIG.PAGE_SIZE;
     const start = (page - 1) * pageSize;
@@ -40,7 +38,6 @@ export class FilterCards {
     };
   }
 
-  /*obtiene los tipos de las cartas*/
   getUniqueTypes(cards) {
     const types = new Set();
     cards.forEach(card => {

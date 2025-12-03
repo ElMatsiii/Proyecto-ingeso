@@ -11,11 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const apellido = document.getElementById('apellido').value.trim();
       const email = document.getElementById('email').value.trim();
       const mensaje = document.getElementById('mensaje').value.trim();
-      
-      // Simulación de envío
+
       alert(`Gracias ${nombre} ${apellido}, tu mensaje ha sido enviado.\n\nNos contactaremos contigo a: ${email}`);
-      
-      // Limpiar formulario
+
       form.reset();
     });
   }

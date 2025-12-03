@@ -1,4 +1,3 @@
-// src/presentation/controllers/homeController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCards } from '../../core/usecases/getCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -9,7 +8,6 @@ import { STORAGE_KEYS, ROUTES, HIGH_RARITIES } from '../../shared/config/constan
 
 export class HomeController {
   constructor() {
-    // CAMBIO: Usar NeonCardRepository en vez de CardRepositoryImpl
     this.cardRepository = new NeonCardRepository();
     this.getCardsUseCase = new GetCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
@@ -23,15 +21,12 @@ export class HomeController {
     try {
       this.loading.show();
       
-      // Obtener todas las cartas con stock de Neon
       const allCards = await this.cardRepository.getAllCards();
       
       console.log(`Total cartas con stock: ${allCards.length}`);
       
-      // Mezclar aleatoriamente
       const shuffled = this.shuffleArray(allCards);
-      
-      // Filtrar cartas de alta rareza para destacadas
+
       const highRarityCards = shuffled.filter(card => {
         if (!card.rarity) return false;
         const cardRarity = card.rarity.toLowerCase();
@@ -41,13 +36,11 @@ export class HomeController {
       });
       
       console.log(`Cartas de alta rareza encontradas: ${highRarityCards.length}`);
-      
-      // Seleccionar cartas destacadas
+
       let featuredCards;
       if (highRarityCards.length >= 7) {
         featuredCards = highRarityCards.slice(0, 7);
       } else {
-        // Filtrar al menos las que no sean "Común"
         const nonCommonCards = shuffled.filter(card => 
           card.rarity && 
           !card.rarity.toLowerCase().includes('común') && 
@@ -55,8 +48,7 @@ export class HomeController {
         );
         featuredCards = nonCommonCards.slice(0, 7);
       }
-      
-      // Productos nuevos (primeras 10 cartas aleatorias)
+
       const newCards = shuffled.slice(0, 10);
       
       this.renderNewCards(newCards);
@@ -70,7 +62,6 @@ export class HomeController {
     }
   }
 
-  // Función auxiliar para mezclar array
   shuffleArray(array) {
     const copy = [...array];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -104,15 +95,13 @@ export class HomeController {
     
     this.featuredContainer.innerHTML = '';
     
-    // Primera carta grande
     const [mainCard, ...miniCards] = cards;
     const mainElement = CardComponent.renderFeatured(
       mainCard, 
       (card) => this.goToDetail(card)
     );
     this.featuredContainer.appendChild(mainElement);
-    
-    // Contenedor de cartas mini
+
     const sideContainer = document.createElement('div');
     sideContainer.className = 'featured-side';
     

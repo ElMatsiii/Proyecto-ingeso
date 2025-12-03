@@ -1,17 +1,15 @@
-// src/core/usecases/processPayment.js - ACTUALIZADO
 import { CreditCard, Payment } from '../domain/entities/payment.js';
 import { ValidateCard } from './validateCard.js';
 
 export class ProcessPayment {
   constructor(cartStorage, cardRepository) {
     this.cartStorage = cartStorage;
-    this.cardRepository = cardRepository; // NeonCardRepository
+    this.cardRepository = cardRepository;
     this.validateCard = new ValidateCard();
   }
 
   async execute(cardData, billingData = null) {
     try {
-      // 1. Validar la tarjeta
       const validation = this.validateCard.execute(cardData);
       
       if (!validation.valid) {
@@ -21,7 +19,6 @@ export class ProcessPayment {
         };
       }
 
-      // 2. Obtener el carrito
       const items = this.cartStorage.getItems();
       const total = this.cartStorage.getTotal();
       
@@ -32,7 +29,6 @@ export class ProcessPayment {
         };
       }
 
-      // 3. Verificar stock disponible
       const cardIds = items.map(item => item.id);
       const stockStatus = await this.cardRepository.checkStock(cardIds);
       
@@ -44,7 +40,6 @@ export class ProcessPayment {
         };
       }
 
-      // 4. Crear objetos de dominio
       const creditCard = new CreditCard(cardData);
       const payment = new Payment({
         amount: total,
@@ -53,7 +48,6 @@ export class ProcessPayment {
         billingAddress: billingData
       });
 
-      // 5. Simular procesamiento del pago
       const paymentResult = await this.simulatePaymentProcessing(payment);
 
       if (!paymentResult.success) {
@@ -64,7 +58,6 @@ export class ProcessPayment {
         };
       }
 
-      // 6. Registrar transacción en la BD y actualizar stock
       try {
         const tax = total * 0.19;
         const grandTotal = total + tax;
@@ -83,8 +76,7 @@ export class ProcessPayment {
         
         if (result.success) {
           payment.markAsCompleted();
-          
-          // Limpiar el carrito después del pago exitoso
+
           this.cartStorage.clear();
 
           return {
@@ -115,10 +107,8 @@ export class ProcessPayment {
   }
 
   async simulatePaymentProcessing(payment) {
-    // Simular delay de procesamiento
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Simulación: 95% de éxito
     const success = Math.random() > 0.05;
 
     if (success) {

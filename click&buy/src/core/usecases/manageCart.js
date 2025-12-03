@@ -3,7 +3,6 @@ export class ManageCart {
     this.cartStorage = cartStorage;
   }
 
-  /*Añade una carta al carrito*/
   addCard(card) {
     try {
       const cartItem = card.toCartItem();
@@ -30,7 +29,6 @@ export class ManageCart {
     }
   }
 
-  /*Elimina un item del carrito*/
   removeItem(index) {
     try {
       const success = this.cartStorage.removeItem(index);
@@ -48,22 +46,18 @@ export class ManageCart {
     }
   }
 
-  /*Obtiene todos los items del carrito*/
   getItems() {
     return this.cartStorage.getItems();
   }
 
-  /*Obtiene el total del carrito*/
   getTotal() {
     return this.cartStorage.getTotal();
   }
 
-  /*Obtiene la cantidad de items*/
   getCount() {
     return this.cartStorage.getCount();
   }
 
-  /*Limpia el carrito*/
   clearCart() {
     try {
       const success = this.cartStorage.clear();

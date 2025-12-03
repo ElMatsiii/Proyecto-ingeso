@@ -1,6 +1,6 @@
 # Click & Buy - E-commerce de Cartas Pokémon TCG
 
-## 📋 Descripción del Proyecto
+## Descripción del Proyecto
 
 Click & Buy es una aplicación e-commerce completa para la compra y venta de cartas individuales de Pokémon TCG. El proyecto implementa **Arquitectura Limpia** y consta de:
 
@@ -9,7 +9,7 @@ Click & Buy es una aplicación e-commerce completa para la compra y venta de car
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Frontend
 - HTML5, CSS3, JavaScript (ES6 Modules)
@@ -24,7 +24,7 @@ Click & Buy es una aplicación e-commerce completa para la compra y venta de car
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 proyecto/
@@ -50,7 +50,7 @@ proyecto/
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### **Requisitos Previos**
 
@@ -60,7 +60,7 @@ proyecto/
 
 ---
 
-### **1️⃣ Clonar el Repositorio**
+### **1️ Clonar el Repositorio**
 
 ```bash
 git clone <url-del-repositorio>
@@ -69,7 +69,7 @@ cd proyecto
 
 ---
 
-### **2️⃣ Configurar el Backend**
+### **2️ Configurar el Backend**
 
 #### **Paso 1: Instalar dependencias**
 
@@ -93,7 +93,7 @@ PORT=3000
 ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 ```
 
-> **⚠️ IMPORTANTE**: Si cada compañero usa su propia base de datos en Neon, deben reemplazar el `DATABASE_URL` con su propio connection string.
+> **IMPORTANTE**: Si cada compañero usa su propia base de datos en Neon, deben reemplazar el `DATABASE_URL` con su propio connection string.
 
 #### **Paso 3: Crear base de datos**
 
@@ -145,7 +145,7 @@ El servidor estará corriendo en `http://localhost:3000`
 
 ---
 
-### **3️⃣ Configurar el Frontend**
+### **3️ Configurar el Frontend**
 
 #### **Paso 1: Instalar dependencias** (opcional)
 
@@ -163,7 +163,7 @@ Abre `click&buy/src/infrastructure/repositories/neonCardRepository.js` y verific
 ```javascript
 constructor() {
   super();
-  this.baseUrl = 'http://localhost:3000/api'; // ✅ Debe coincidir con tu backend
+  this.baseUrl = 'http://localhost:3000/api';
 }
 ```
 
@@ -192,7 +192,7 @@ La aplicación estará disponible en `http://localhost:8000` o el puerto que eli
 
 ---
 
-## 🎯 Uso de la Aplicación
+## Uso de la Aplicación
 
 ### **Como Usuario**
 
@@ -204,14 +204,14 @@ La aplicación estará disponible en `http://localhost:8000` o el puerto que eli
 
 ### **Validaciones de Stock**
 
-- ✅ Solo se muestran cartas **con stock > 0**
-- ✅ El botón "Agregar" está **deshabilitado** si no hay stock
-- ✅ Al hacer checkout se **verifica stock en tiempo real**
-- ✅ Al completar pago el **stock se reduce automáticamente**
+- Solo se muestran cartas **con stock > 0**
+- El botón "Agregar" está **deshabilitado** si no hay stock
+- Al hacer checkout se **verifica stock en tiempo real**
+- Al completar pago el **stock se reduce automáticamente**
 
 ---
 
-## 🧪 Testing del Sistema
+## Testing del Sistema
 
 ### **1. Verificar el Backend**
 
@@ -249,7 +249,7 @@ CVV: Cualquier 3 dígitos (4 para Amex)
 
 ---
 
-## 🐛 Solución de Problemas Comunes
+## Solución de Problemas Comunes
 
 ### **Error: "Cannot connect to database"**
 
@@ -280,7 +280,7 @@ CVV: Cualquier 3 dígitos (4 para Amex)
 
 ---
 
-## 📊 Endpoints de la API
+## Endpoints de la API
 
 ### **Cartas**
 
@@ -308,17 +308,17 @@ GET /api/stats                    # Estadísticas generales
 
 ---
 
-## 🔐 Seguridad y Buenas Prácticas
+## Seguridad y Buenas Prácticas
 
-- ✅ Validación de tarjetas con algoritmo de Luhn
-- ✅ Verificación de stock en tiempo real antes de comprar
-- ✅ Transacciones atómicas en la base de datos
-- ✅ Manejo de errores en todas las capas
-- ✅ Sanitización de inputs
+- Validación de tarjetas con algoritmo de Luhn
+- Verificación de stock en tiempo real antes de comprar
+- Transacciones atómicas en la base de datos
+- Manejo de errores en todas las capas
+- Sanitización de inputs
 
 ---
 
-## 👥 Colaboración
+## Colaboración
 
 ### **Para trabajar en equipo:**
 
@@ -345,17 +345,17 @@ git push origin feature/nombre-feature
 
 ---
 
-## 📝 Notas Importantes
+## Notas Importantes
 
-- ⚠️ **NO commitear el archivo `.env`** (ya está en `.gitignore`)
-- ⚠️ El archivo `.env` contiene credenciales sensibles
-- ⚠️ Cada desarrollador debe tener su propio `.env`
-- ✅ El `seed` genera datos aleatorios, por lo que cada base tendrá cartas diferentes
-- ✅ El sistema funciona completamente offline después del seed
+- **NO commitear el archivo `.env`** (ya está en `.gitignore`)
+- El archivo `.env` contiene credenciales sensibles
+- Cada desarrollador debe tener su propio `.env`
+- El `seed` genera datos aleatorios, por lo que cada base tendrá cartas diferentes
+- El sistema funciona completamente offline después del seed
 
 ---
 
-## 📧 Contacto y Soporte
+## Contacto y Soporte
 
 Si encuentras algún problema durante la instalación o ejecución:
 
@@ -366,10 +366,10 @@ Si encuentras algún problema durante la instalación o ejecución:
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es con fines educativos. Las cartas Pokémon y sus imágenes son propiedad de The Pokémon Company.
 
 ---
 
-**¡Listo! 🎉 Tu aplicación debería estar funcionando completamente.**
+**¡Listo! Tu aplicación debería estar funcionando completamente.**

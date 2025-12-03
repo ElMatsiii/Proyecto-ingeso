@@ -1,4 +1,3 @@
-// src/presentation/controllers/catalogoController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { FilterCards } from '../../core/usecases/filterCards.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -10,24 +9,20 @@ import { STORAGE_KEYS, ROUTES, TYPE_TRANSLATIONS } from '../../shared/config/con
 
 export class CatalogoController {
   constructor() {
-    // Dependencias
     this.cardRepository = new NeonCardRepository();
     this.filterCardsUseCase = new FilterCards(this.cardRepository);
     this.manageCartUseCase = new ManageCart(new LocalStorageCart());
     
-    // Elementos DOM
     this.gridContainer = document.getElementById('cardsGrid');
     this.loading = new LoadingComponent('loading');
     this.pagination = new PaginationComponent('pagination');
-    
-    // Filtros
+
     this.filterNameInput = document.getElementById('filterName');
     this.filterTypeSelect = document.getElementById('filterType');
     this.filterSetInput = document.getElementById('filterSet');
     this.applyFiltersBtn = document.getElementById('applyFilters');
     this.clearFiltersBtn = document.getElementById('clearFilters');
-    
-    // Estado
+
     this.allCards = [];
     this.filteredCards = [];
     this.currentPage = 1;
@@ -37,17 +32,14 @@ export class CatalogoController {
     try {
       this.loading.show();
       
-      // Cargar todas las cartas con stock disponible
       this.allCards = await this.cardRepository.getAllCards();
       this.filteredCards = [...this.allCards];
       
       console.log(`Cartas cargadas en catálogo: ${this.allCards.length}`);
-      
-      // Configurar filtros
+
       this.populateTypeFilter();
       this.setupEventListeners();
       
-      // Renderizar primera página
       this.renderPage(1);
     } catch (error) {
       console.error('Error initializing catalog:', error);
@@ -119,8 +111,7 @@ export class CatalogoController {
     
     this.currentPage = page;
     const paginationData = this.filterCardsUseCase.paginate(this.filteredCards, page);
-    
-    // Limpiar grid
+
     this.gridContainer.innerHTML = '';
     
     if (paginationData.cards.length === 0) {
@@ -129,8 +120,7 @@ export class CatalogoController {
       this.pagination.clear();
       return;
     }
-    
-    // Renderizar cartas
+
     paginationData.cards.forEach(card => {
       const cardElement = CardComponent.render(card, {
         showAddToCart: true,
@@ -142,14 +132,12 @@ export class CatalogoController {
       this.gridContainer.appendChild(cardElement);
     });
     
-    // Renderizar paginación
     this.pagination.render(paginationData, (page) => this.renderPage(page));
   }
 
   addToCart(card) {
-    // Validación: verificar que la carta tenga stock antes de agregar
     if (!card.stock || card.stock <= 0) {
-      alert('⚠️ Esta carta no tiene stock disponible');
+      alert('Esta carta no tiene stock disponible');
       return;
     }
     
@@ -157,7 +145,7 @@ export class CatalogoController {
     if (result.success) {
       alert(result.message);
     } else {
-      alert('❌ No se pudo agregar la carta al carrito');
+      alert('No se pudo agregar la carta al carrito');
     }
   }
 

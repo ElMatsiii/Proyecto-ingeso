@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="../assets/css/checkout.css">
 </head>
 <body>
-  <!-- Header -->
   <header class="site-header">
     <div class="container nav">
       <div class="brand">Click & Buy</div>
@@ -24,12 +23,10 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="container section">
     <h1>🛒 Finalizar Compra</h1>
 
     <div class="checkout-container">
-      <!-- Resumen del pedido -->
       <div class="order-summary">
         <h2>Resumen del Pedido</h2>
         <div id="orderItems"></div>
@@ -49,12 +46,10 @@
         </div>
       </div>
 
-      <!-- Formulario de pago -->
       <div class="payment-form-container">
         <h2>Información de Pago</h2>
         
         <form id="paymentForm" class="payment-form" novalidate>
-          <!-- Número de tarjeta -->
           <div class="form-group">
             <label for="cardNumber">Número de Tarjeta *</label>
             <div class="input-with-icon">
@@ -72,7 +67,6 @@
             <span class="error-message" id="cardNumberError"></span>
           </div>
 
-          <!-- Titular de la tarjeta -->
           <div class="form-group">
             <label for="cardHolder">Titular de la Tarjeta *</label>
             <input 
@@ -86,7 +80,6 @@
             <span class="error-message" id="cardHolderError"></span>
           </div>
 
-          <!-- Fecha de expiración y CVV -->
           <div class="form-row">
             <div class="form-group">
               <label for="expiryMonth">Fecha de Expiración *</label>
@@ -140,7 +133,6 @@
             </div>
           </div>
 
-          <!-- Botones -->
           <div class="form-actions">
             <button type="button" class="btn btn-primary" onclick="window.location.href='carrito.html'">
               Volver al Carrito
@@ -151,7 +143,6 @@
           </div>
         </form>
 
-        <!-- Loading overlay -->
         <div id="processingOverlay" class="processing-overlay" style="display: none;">
           <div class="spinner"></div>
           <p>Procesando pago...</p>
@@ -160,7 +151,6 @@
     </div>
   </main>
 
-  <!-- Modal de éxito -->
   <div id="successModal" class="modal" style="display: none;">
     <div class="modal-content success">
       <span class="modal-icon"></span>
@@ -173,7 +163,6 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <p>© 2025 Click & Buy | Pago seguro</p>

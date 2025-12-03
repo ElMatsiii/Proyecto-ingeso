@@ -1,8 +1,4 @@
-// src/presentation/components/cardComponent.js - CORREGIDO
 export class CardComponent {
-  /**
-   * Renderiza una carta estándar
-   */
   static render(card, options = {}) {
     const {
       showAddToCart = true,
@@ -13,11 +9,9 @@ export class CardComponent {
 
     const div = document.createElement('div');
     div.className = 'card';
-    
-    // ✅ CORREGIDO: Usar imagen directamente sin manipular
+
     const imgUrl = card.image || '../assets/images/no-imagen.png';
-    
-    // ✅ VALIDACIÓN DE STOCK
+
     const hasStock = card.stock && card.stock > 0;
     const stockMessage = hasStock 
       ? `Stock: ${card.stock}` 
@@ -40,7 +34,6 @@ export class CardComponent {
       </div>
     `;
 
-    // Solo agregar event listener si HAY stock
     if (showAddToCart && hasStock && onAddToCart) {
       div.querySelector('.add-cart')?.addEventListener('click', () => onAddToCart(card));
     }
@@ -52,14 +45,10 @@ export class CardComponent {
     return div;
   }
 
-  /**
-   * Renderiza una carta mini (para destacados)
-   */
   static renderMini(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-mini';
     
-    // ✅ Usar imagen directamente
     const imgUrl = card.image || '../assets/images/no-imagen.png';
     
     div.innerHTML = `
@@ -76,14 +65,10 @@ export class CardComponent {
     return div;
   }
 
-  /**
-   * Renderiza una carta grande (destacada principal)
-   */
   static renderFeatured(card, onViewDetail) {
     const div = document.createElement('div');
     div.className = 'featured-main';
-    
-    // ✅ Usar imagen directamente
+
     const imgUrl = card.image || '../assets/images/no-imagen.png';
     
     div.innerHTML = `

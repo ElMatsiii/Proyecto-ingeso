@@ -1,4 +1,3 @@
-// backend/scripts/initDatabase.js
 import dotenv from 'dotenv';
 import { neon } from '@neondatabase/serverless';
 
@@ -8,10 +7,9 @@ const sql = neon(process.env.DATABASE_URL);
 
 async function initDatabase() {
   try {
-    console.log('🗄️  Inicializando base de datos...\n');
+    console.log('Inicializando base de datos...\n');
 
-    // 1. Crear tabla de cartas
-    console.log('📋 Creando tabla cards...');
+    console.log('Creando tabla cards...');
     await sql`
       CREATE TABLE IF NOT EXISTS cards (
         id VARCHAR(50) PRIMARY KEY,
@@ -30,10 +28,9 @@ async function initDatabase() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
-    console.log('✅ Tabla cards creada\n');
+    console.log('Tabla cards creada\n');
 
-    // 2. Crear tabla de ataques
-    console.log('📋 Creando tabla card_attacks...');
+    console.log('Creando tabla card_attacks...');
     await sql`
       CREATE TABLE IF NOT EXISTS card_attacks (
         id SERIAL PRIMARY KEY,
@@ -43,10 +40,9 @@ async function initDatabase() {
         effect TEXT
       )
     `;
-    console.log('✅ Tabla card_attacks creada\n');
+    console.log('Tabla card_attacks creada\n');
 
-    // 3. Crear tabla de transacciones
-    console.log('📋 Creando tabla transactions...');
+    console.log('Creando tabla transactions...');
     await sql`
       CREATE TABLE IF NOT EXISTS transactions (
         id SERIAL PRIMARY KEY,
@@ -60,10 +56,9 @@ async function initDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
-    console.log('✅ Tabla transactions creada\n');
+    console.log('Tabla transactions creada\n');
 
-    // 4. Crear tabla de items de transacción
-    console.log('📋 Creando tabla transaction_items...');
+    console.log('Creando tabla transaction_items...');
     await sql`
       CREATE TABLE IF NOT EXISTS transaction_items (
         id SERIAL PRIMARY KEY,
@@ -74,18 +69,16 @@ async function initDatabase() {
         quantity INTEGER DEFAULT 1
       )
     `;
-    console.log('✅ Tabla transaction_items creada\n');
+    console.log('Tabla transaction_items creada\n');
 
-    // 5. Crear índices
-    console.log('📊 Creando índices...');
+    console.log('Creando índices...');
     await sql`CREATE INDEX IF NOT EXISTS idx_cards_rarity ON cards(rarity)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_cards_set_name ON cards(set_name)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_cards_stock ON cards(stock)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_transactions_created_at ON transactions(created_at)`;
-    console.log('✅ Índices creados\n');
+    console.log('Índices creados\n');
 
-    // 6. Crear función y trigger para updated_at
-    console.log('⚙️  Creando función de actualización...');
+    console.log('Creando función de actualización...');
     await sql`
       CREATE OR REPLACE FUNCTION update_updated_at_column()
       RETURNS TRIGGER AS $$
@@ -106,10 +99,9 @@ async function initDatabase() {
       FOR EACH ROW 
       EXECUTE FUNCTION update_updated_at_column()
     `;
-    console.log('✅ Función y trigger creados\n');
+    console.log('Función y trigger creados\n');
 
-    // 7. Verificar tablas creadas
-    console.log('🔍 Verificando tablas...');
+    console.log('Verificando tablas...');
     const tables = await sql`
       SELECT table_name 
       FROM information_schema.tables 
@@ -117,16 +109,16 @@ async function initDatabase() {
       ORDER BY table_name
     `;
 
-    console.log('📦 Tablas en la base de datos:');
+    console.log('Tablas en la base de datos:');
     tables.forEach(table => {
       console.log(`   ✓ ${table.table_name}`);
     });
 
-    console.log('\n✨ ¡Base de datos inicializada correctamente!\n');
-    console.log('🚀 Siguiente paso: ejecuta "npm run seed" para poblar con datos\n');
+    console.log('\n ¡Base de datos inicializada correctamente!\n');
+    console.log('Siguiente paso: ejecuta "npm run seed" para poblar con datos\n');
 
   } catch (error) {
-    console.error('❌ Error inicializando base de datos:', error);
+    console.error('Error inicializando base de datos:', error);
     process.exit(1);
   }
 }

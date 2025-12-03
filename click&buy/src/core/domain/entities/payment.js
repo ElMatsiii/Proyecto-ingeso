@@ -1,5 +1,3 @@
-// src/core/domain/entities/payment.js
-
 export class CreditCard {
   constructor({
     cardNumber,
@@ -15,9 +13,6 @@ export class CreditCard {
     this.cvv = cvv;
   }
 
-  /**
-   * Obtiene el tipo de tarjeta basado en el número
-   */
   getCardType() {
     const number = this.cardNumber.replace(/\s/g, '');
     
@@ -29,25 +24,16 @@ export class CreditCard {
     return 'Unknown';
   }
 
-  /**
-   * Obtiene los últimos 4 dígitos de la tarjeta
-   */
   getLastFourDigits() {
     const number = this.cardNumber.replace(/\s/g, '');
     return number.slice(-4);
   }
 
-  /**
-   * Formatea el número de tarjeta para mostrar (ocultando dígitos)
-   */
   getMaskedNumber() {
     const number = this.cardNumber.replace(/\s/g, '');
     return `**** **** **** ${this.getLastFourDigits()}`;
   }
 
-  /**
-   * Verifica si la tarjeta ha expirado
-   */
   isExpired() {
     const now = new Date();
     const currentYear = now.getFullYear();

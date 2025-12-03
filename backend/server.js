@@ -1,4 +1,3 @@
-// server.js - ACTUALIZADO con mejor validación de stock
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -9,13 +8,9 @@ dotenv.config();
 const app = express();
 const sql = neon(process.env.DATABASE_URL);
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// ============ ENDPOINTS DE CARTAS ============
-
-// Obtener todas las cartas con stock disponible
 app.get('/api/cards', async (req, res) => {
   try {
     const { type, rarity, set, name, inStock } = req.query;
@@ -24,7 +19,6 @@ app.get('/api/cards', async (req, res) => {
     const params = [];
     let paramCount = 1;
     
-    // IMPORTANTE: Filtrar por stock PRIMERO
     if (inStock === 'true') {
       query += ' AND stock > 0';
     }
@@ -63,7 +57,6 @@ app.get('/api/cards', async (req, res) => {
   }
 });
 
-// Obtener una carta específica
 app.get('/api/cards/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -76,7 +69,6 @@ app.get('/api/cards/:id', async (req, res) => {
       return res.status(404).json({ error: 'Carta no encontrada' });
     }
     
-    // Obtener ataques de la carta
     const attacks = await sql`
       SELECT name, damage, effect 
       FROM card_attacks 
@@ -91,7 +83,6 @@ app.get('/api/cards/:id', async (req, res) => {
   }
 });
 
-// Verificar stock disponible
 app.post('/api/cards/check-stock', async (req, res) => {
   try {
     const { cardIds } = req.body;
@@ -116,9 +107,6 @@ app.post('/api/cards/check-stock', async (req, res) => {
   }
 });
 
-// ============ ENDPOINTS DE TRANSACCIONES ============
-
-// Procesar compra - CON VALIDACIÓN MEJORADA
 app.post('/api/transactions', async (req, res) => {
   try {
     const {
@@ -131,16 +119,15 @@ app.post('/api/transactions', async (req, res) => {
       lastFourDigits
     } = req.body;
     
-    console.log('📦 Procesando transacción:', transactionId);
-    console.log('🛒 Items recibidos:', items.length);
+    console.log('Procesando transacción:', transactionId);
+    console.log('Items recibidos:', items.length);
     
-    // Verificar stock disponible
     const cardIds = items.map(item => item.id);
     const cards = await sql`
       SELECT id, name, stock, price FROM cards WHERE id = ANY(${cardIds})
     `;
     
-    console.log('📊 Cartas encontradas en BD:', cards.length);
+    console.log('Cartas encontradas en BD:', cards.length);
     
     // Validar stock ESTRICTAMENTE
     const stockErrors = [];
@@ -152,7 +139,7 @@ app.post('/api/transactions', async (req, res) => {
         continue;
       }
       
-      console.log(`🔍 Verificando ${card.name}: stock=${card.stock}`);
+      console.log(`Verificando ${card.name}: stock=${card.stock}`);
       
       // VALIDACIÓN ESTRICTA: debe tener stock > 0
       if (!card.stock || card.stock < 1) {
@@ -162,14 +149,14 @@ app.post('/api/transactions', async (req, res) => {
     
     // Si hay errores de stock, rechazar la transacción
     if (stockErrors.length > 0) {
-      console.error('❌ Errores de stock:', stockErrors);
+      console.error('Errores de stock:', stockErrors);
       return res.status(400).json({
         error: 'Stock no disponible',
         details: stockErrors
       });
     }
     
-    console.log('✅ Stock verificado correctamente');
+    console.log('Stock verificado correctamente');
     
     // Iniciar transacción
     // 1. Crear registro de transacción
@@ -186,7 +173,7 @@ app.post('/api/transactions', async (req, res) => {
     `;
     
     const transId = transaction[0].id;
-    console.log('💾 Transacción creada con ID:', transId);
+    console.log('Transacción creada con ID:', transId);
     
     // 2. Crear items de transacción y reducir stock
     for (const item of items) {
@@ -209,14 +196,14 @@ app.post('/api/transactions', async (req, res) => {
       `;
       
       if (result.length === 0) {
-        console.error(`❌ No se pudo reducir stock para ${item.nombre}`);
+        console.error(`No se pudo reducir stock para ${item.nombre}`);
         throw new Error(`Error al actualizar stock de ${item.nombre}`);
       }
       
-      console.log(`📉 Stock actualizado para ${item.nombre}: ${result[0].stock}`);
+      console.log(`Stock actualizado para ${item.nombre}: ${result[0].stock}`);
     }
     
-    console.log('✅ Transacción completada exitosamente');
+    console.log('Transacción completada exitosamente');
     
     res.json({
       success: true,
@@ -225,7 +212,7 @@ app.post('/api/transactions', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Error processing transaction:', error);
+    console.error('Error processing transaction:', error);
     res.status(500).json({ 
       error: 'Error al procesar la compra',
       details: error.message 
@@ -233,7 +220,6 @@ app.post('/api/transactions', async (req, res) => {
   }
 });
 
-// Obtener historial de transacciones
 app.get('/api/transactions', async (req, res) => {
   try {
     const transactions = await sql`
@@ -260,9 +246,6 @@ app.get('/api/transactions', async (req, res) => {
   }
 });
 
-// ============ ENDPOINTS DE ADMINISTRACIÓN ============
-
-// Actualizar stock de una carta
 app.patch('/api/cards/:id/stock', async (req, res) => {
   try {
     const { id } = req.params;
@@ -286,7 +269,6 @@ app.patch('/api/cards/:id/stock', async (req, res) => {
   }
 });
 
-// Estadísticas
 app.get('/api/stats', async (req, res) => {
   try {
     const stats = await sql`
@@ -315,13 +297,13 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// Health check
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Iniciar servidor
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

@@ -1,4 +1,3 @@
-// src/infrastructure/repositories/neonCardRepository.js - CORREGIDO
 import { CardRepository } from '../../core/domain/repositories/cardRepository.js';
 import { Card } from '../../core/domain/entities/card.js';
 
@@ -17,10 +16,10 @@ export class NeonCardRepository extends CardRepository {
       }
       
       const data = await response.json();
-      console.log('📦 Cartas recibidas del backend:', data.length);
+      console.log('Cartas recibidas del backend:', data.length);
       
       if (data.length > 0) {
-        console.log('🔍 Ejemplo de carta recibida:', {
+        console.log('Ejemplo de carta recibida:', {
           id: data[0].id,
           name: data[0].name,
           stock: data[0].stock,
@@ -45,7 +44,7 @@ export class NeonCardRepository extends CardRepository {
       }
       
       const data = await response.json();
-      console.log('🔍 Carta individual recibida:', {
+      console.log('Carta individual recibida:', {
         id: data.id,
         name: data.name,
         stock: data.stock,
@@ -138,12 +137,11 @@ export class NeonCardRepository extends CardRepository {
     }
   }
 
-  // ✅ CORREGIDO: No manipular la URL de imagen
   mapToCard(data) {
     const mappedCard = new Card({
       id: data.id,
       name: data.name,
-      image: data.image_url, // ✅ Usar URL directamente desde BD
+      image: data.image_url,
       rarity: data.rarity,
       types: data.types || [],
       set: {
@@ -158,7 +156,7 @@ export class NeonCardRepository extends CardRepository {
       stock: parseInt(data.stock) || 0
     });
     
-    console.log('🗺️ Carta mapeada:', {
+    console.log('Carta mapeada:', {
       id: mappedCard.id,
       name: mappedCard.name,
       stock: mappedCard.stock,

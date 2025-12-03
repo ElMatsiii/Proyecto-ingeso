@@ -1,5 +1,3 @@
-// src/presentation/controllers/carritoController.js
-
 import { ManageCart } from '../../core/usecases/manageCart.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
 import { buildImageUrl } from '../../shared/utils/imageBuilder.js';
@@ -38,7 +36,6 @@ export class CarritoController {
       `;
       this.totalElement.textContent = '$0.00';
       
-      // Deshabilitar botón de checkout
       if (this.checkoutBtn) {
         this.checkoutBtn.disabled = true;
         this.checkoutBtn.style.opacity = '0.5';
@@ -47,14 +44,12 @@ export class CarritoController {
       return;
     }
 
-    // Habilitar botón de checkout
     if (this.checkoutBtn) {
       this.checkoutBtn.disabled = false;
       this.checkoutBtn.style.opacity = '1';
       this.checkoutBtn.style.cursor = 'pointer';
     }
 
-    // Renderizar items
     this.container.innerHTML = items.map((item, index) => {
       let imageUrl = item.imagen;
       
@@ -80,8 +75,7 @@ export class CarritoController {
 
     const total = this.manageCartUseCase.getTotal();
     this.totalElement.textContent = `$${total.toFixed(2)}`;
-    
-    // Agregar event listeners a los botones de eliminar
+
     this.container.querySelectorAll('.remove').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const index = parseInt(e.target.getAttribute('data-index'));

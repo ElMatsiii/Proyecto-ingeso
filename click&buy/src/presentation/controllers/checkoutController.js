@@ -1,4 +1,3 @@
-// src/presentation/controllers/checkoutController.js - ACTUALIZADO
 import { ProcessPayment } from '../../core/usecases/processPayment.js';
 import { ValidateCard } from '../../core/usecases/validateCard.js';
 import { LocalStorageCart } from '../../infrastructure/storage/LocalStorageCart.js';
@@ -13,8 +12,7 @@ export class CheckoutController {
     this.processPaymentUseCase = new ProcessPayment(cartStorage, cardRepository);
     this.validateCardUseCase = new ValidateCard();
     this.cardRepository = cardRepository;
-    
-    // Elementos DOM
+
     this.form = document.getElementById('paymentForm');
     this.orderItemsContainer = document.getElementById('orderItems');
     this.subtotalElement = document.getElementById('subtotal');
@@ -23,14 +21,12 @@ export class CheckoutController {
     this.processingOverlay = document.getElementById('processingOverlay');
     this.successModal = document.getElementById('successModal');
     
-    // Inputs
     this.cardNumberInput = document.getElementById('cardNumber');
     this.cardHolderInput = document.getElementById('cardHolder');
     this.expiryMonthSelect = document.getElementById('expiryMonth');
     this.expiryYearSelect = document.getElementById('expiryYear');
     this.cvvInput = document.getElementById('cvv');
     
-    // Error messages
     this.cardNumberError = document.getElementById('cardNumberError');
     this.cardHolderError = document.getElementById('cardHolderError');
     this.expiryError = document.getElementById('expiryError');
@@ -40,7 +36,6 @@ export class CheckoutController {
   }
 
   async init() {
-    // Verificar si hay items en el carrito
     const summary = this.processPaymentUseCase.getCartSummary();
     
     if (summary.count === 0) {
@@ -49,16 +44,12 @@ export class CheckoutController {
       return;
     }
 
-    // Verificar stock disponible
     await this.verifyStock(summary.items);
 
-    // Renderizar resumen del pedido
     this.renderOrderSummary(summary);
-    
-    // Poblar años de expiración
+
     this.populateExpiryYears();
     
-    // Configurar event listeners
     this.setupEventListeners();
   }
 
@@ -70,7 +61,7 @@ export class CheckoutController {
       const outOfStock = stockStatus.filter(item => !item.available);
       
       if (outOfStock.length > 0) {
-        alert(`⚠️ Los siguientes productos ya no tienen stock:\n${outOfStock.map(i => i.name).join('\n')}\n\nSerás redirigido al carrito.`);
+        alert(`Los siguientes productos ya no tienen stock:\n${outOfStock.map(i => i.name).join('\n')}\n\nSerás redirigido al carrito.`);
         window.location.href = 'carrito.html';
       }
     } catch (error) {
@@ -80,7 +71,6 @@ export class CheckoutController {
   }
 
   renderOrderSummary(summary) {
-    // Renderizar items
     if (this.orderItemsContainer) {
       this.orderItemsContainer.innerHTML = summary.items.map(item => {
         let imageUrl = item.imagen;
@@ -102,7 +92,6 @@ export class CheckoutController {
       }).join('');
     }
 
-    // Actualizar totales
     if (this.subtotalElement) {
       this.subtotalElement.textContent = `$${summary.total.toFixed(2)}`;
     }
@@ -178,10 +167,10 @@ export class CheckoutController {
     const cardType = this.validateCardUseCase.getCardType(this.cardNumberInput.value);
     
     const icons = {
-      'Visa': '💳',
-      'Mastercard': '💳',
-      'American Express': '💳',
-      'Discover': '💳'
+      'Visa': '',
+      'Mastercard': '',
+      'American Express': '',
+      'Discover': ''
     };
     
     this.cardTypeIcon.textContent = icons[cardType] || '';

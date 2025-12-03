@@ -1,4 +1,3 @@
-// src/presentation/controllers/detalleController.js - CORREGIDO
 import { NeonCardRepository } from '../../infrastructure/repositories/neonCardRepository.js';
 import { GetCardDetail } from '../../core/usecases/getCardDetail.js';
 import { ManageCart } from '../../core/usecases/manageCart.js';
@@ -50,7 +49,6 @@ export class DetalleController {
     
     const imgUrl = buildImageUrl(card.image);
     
-    // Verificar stock - CORRECCIÓN: usar > 0 en vez de >= 0
     const hasStock = card.stock && card.stock > 0;
     const stockInfo = hasStock
       ? `<p style="font-weight: 600;"><strong>Stock disponible:</strong> ${card.stock} unidades</p>` 
@@ -88,7 +86,6 @@ export class DetalleController {
       </section>
     `;
 
-    // CORRECCIÓN: Solo agregar event listener si HAY stock
     if (hasStock) {
       const addToCartBtn = this.container.querySelector('.add-cart');
       if (addToCartBtn) {
@@ -151,9 +148,8 @@ export class DetalleController {
   }
 
   addToCart(card) {
-    // Validación adicional: verificar stock antes de agregar
     if (!card.stock || card.stock <= 0) {
-      alert('⚠️ Esta carta no tiene stock disponible');
+      alert('Esta carta no tiene stock disponible');
       return;
     }
     
@@ -161,7 +157,7 @@ export class DetalleController {
     if (result.success) {
       alert(result.message);
     } else {
-      alert('❌ No se pudo agregar la carta al carrito');
+      alert('No se pudo agregar la carta al carrito');
     }
   }
 

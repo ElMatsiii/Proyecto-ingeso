@@ -1,4 +1,3 @@
-// src/core/domain/entities/card.js - CORREGIDO
 export class Card {
   constructor({
     id,
@@ -16,7 +15,7 @@ export class Card {
   }) {
     this.id = id;
     this.name = name;
-    this.image = image; // ✅ Guardar URL tal como viene
+    this.image = image;
     this.rarity = rarity;
     this.types = types;
     this.set = set;
@@ -27,8 +26,7 @@ export class Card {
     this.price = price || this.generatePrice();
     this.stock = stock !== undefined ? parseInt(stock) : 0;
     
-    // Debug
-    console.log(`✨ Card creada: ${this.name} - Stock: ${this.stock}, Price: ${this.price}`);
+    console.log(`Card creada: ${this.name} - Stock: ${this.stock}, Price: ${this.price}`);
   }
 
   generatePrice() {
@@ -47,12 +45,11 @@ export class Card {
     return this.attacks && this.attacks.length > 0;
   }
 
-  // ✅ CORREGIDO: No manipular la URL de imagen
   toCartItem() {
     return {
       id: this.id,
       nombre: this.name,
-      imagen: this.image, // ✅ Usar URL directamente
+      imagen: this.image,
       precio: this.price,
       stock: this.stock
     };
