@@ -53,8 +53,8 @@ export class DetalleController {
     // Verificar stock - CORRECCIÓN: usar > 0 en vez de >= 0
     const hasStock = card.stock && card.stock > 0;
     const stockInfo = hasStock
-      ? `<p style="color: #10b981; font-weight: 600;"><strong>Stock disponible:</strong> ${card.stock} unidades</p>` 
-      : '<p style="color: #ef4444; font-weight: 600;"><strong>Sin stock</strong></p>';
+      ? `<p style="font-weight: 600;"><strong>Stock disponible:</strong> ${card.stock} unidades</p>` 
+      : '<p style="font-weight: 600;"><strong>Sin stock</strong></p>';
     
     this.container.innerHTML = `
       <div class="detalle-card">

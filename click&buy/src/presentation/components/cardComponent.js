@@ -31,7 +31,7 @@ export class CardComponent {
         <p>${card.rarity} • ${card.getTypesString()}</p>
         <p><strong>Set:</strong> ${card.getSetName()}</p>
         <p><strong>Precio:</strong> $${parseFloat(card.price).toFixed(2)}</p>
-        <p style="color: ${hasStock ? '#10b981' : '#ef4444'}; font-weight: 600;">${stockMessage}</p>
+        <p style="font-weight: 600;">${stockMessage}</p>
         <div class="card-actions">
           ${showViewDetail ? '<button class="btn view-card">Ver Detalle</button>' : ''}
           ${showAddToCart && hasStock ? '<button class="btn add-cart">Agregar</button>' : ''}
