@@ -183,19 +183,23 @@ export function createAdminRoutes(sql) {
 
       const recentSales = await sql`
         SELECT 
+          t.id,
           t.transaction_id,
           t.grand_total,
           t.created_at,
-          json_agg(
-            json_build_object(
-              'card_name', ti.card_name,
-              'price', ti.price,
-              'quantity', ti.quantity
-            )
+          COALESCE(
+            json_agg(
+              json_build_object(
+                'card_name', ti.card_name,
+                'price', ti.price,
+                'quantity', ti.quantity
+              )
+            ) FILTER (WHERE ti.id IS NOT NULL),
+            '[]'
           ) as items
         FROM transactions t
         LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
-        GROUP BY t.id
+        GROUP BY t.id, t.transaction_id, t.grand_total, t.created_at
         ORDER BY t.created_at DESC
         LIMIT 10
       `;
@@ -254,51 +258,77 @@ export function createAdminRoutes(sql) {
     try {
       const { startDate, endDate, limit = 50 } = req.query;
 
-      let query = sql`
-        SELECT 
-          t.*,
-          json_agg(
-            json_build_object(
-              'card_name', ti.card_name,
-              'price', ti.price,
-              'quantity', ti.quantity
-            )
-          ) as items
-        FROM transactions t
-        LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
-      `;
+      let sales;
 
       if (startDate && endDate) {
-        query = sql`
+        sales = await sql`
           SELECT 
-            t.*,
-            json_agg(
-              json_build_object(
-                'card_name', ti.card_name,
-                'price', ti.price,
-                'quantity', ti.quantity
-              )
+            t.id,
+            t.transaction_id,
+            t.total_amount,
+            t.tax_amount,
+            t.grand_total,
+            t.payment_status,
+            t.card_type,
+            t.last_four_digits,
+            t.created_at,
+            COALESCE(
+              json_agg(
+                json_build_object(
+                  'card_name', ti.card_name,
+                  'price', ti.price,
+                  'quantity', ti.quantity
+                )
+              ) FILTER (WHERE ti.id IS NOT NULL),
+              '[]'
             ) as items
           FROM transactions t
           LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
           WHERE t.created_at BETWEEN ${startDate} AND ${endDate}
+          GROUP BY t.id
+          ORDER BY t.created_at DESC
+          LIMIT ${parseInt(limit)}
+        `;
+      } else {
+        sales = await sql`
+          SELECT 
+            t.id,
+            t.transaction_id,
+            t.total_amount,
+            t.tax_amount,
+            t.grand_total,
+            t.payment_status,
+            t.card_type,
+            t.last_four_digits,
+            t.created_at,
+            COALESCE(
+              json_agg(
+                json_build_object(
+                  'card_name', ti.card_name,
+                  'price', ti.price,
+                  'quantity', ti.quantity
+                )
+              ) FILTER (WHERE ti.id IS NOT NULL),
+              '[]'
+            ) as items
+          FROM transactions t
+          LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
+          GROUP BY t.id
+          ORDER BY t.created_at DESC
+          LIMIT ${parseInt(limit)}
         `;
       }
 
-      const sales = await sql`
-        ${query}
-        GROUP BY t.id
-        ORDER BY t.created_at DESC
-        LIMIT ${limit}
-      `;
-
       res.json({
         success: true,
-        sales
+        sales: sales || []
       });
     } catch (error) {
       console.error('Error obteniendo ventas:', error);
-      res.status(500).json({ error: 'Error al obtener ventas' });
+      res.status(500).json({ 
+        error: 'Error al obtener ventas',
+        details: error.message 
+      });
     }
   });
 

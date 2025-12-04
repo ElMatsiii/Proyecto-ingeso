@@ -77,27 +77,30 @@ async function loadDashboard() {
 function renderRecentSales(sales) {
   const container = document.getElementById('recentSalesList');
   
-  if (sales.length === 0) {
+  if (!sales || sales.length === 0) {
     container.innerHTML = '<p style="color: var(--muted);">No hay ventas recientes</p>';
     return;
   }
 
-  container.innerHTML = sales.map(sale => `
-    <div class="list-item">
-      <div class="item-info">
-        <h4>${sale.transaction_id}</h4>
-        <p>${new Date(sale.created_at).toLocaleString()}</p>
-        <p>${sale.items.length} item(s)</p>
+  container.innerHTML = sales.map(sale => {
+    const items = Array.isArray(sale.items) ? sale.items : [];
+    return `
+      <div class="list-item">
+        <div class="item-info">
+          <h4>${sale.transaction_id}</h4>
+          <p>${new Date(sale.created_at).toLocaleString()}</p>
+          <p>${items.length} item(s)</p>
+        </div>
+        <div class="item-value">$${parseFloat(sale.grand_total).toFixed(2)}</div>
       </div>
-      <div class="item-value">$${parseFloat(sale.grand_total).toFixed(2)}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function renderLowStock(cards) {
   const container = document.getElementById('lowStockList');
   
-  if (cards.length === 0) {
+  if (!cards || cards.length === 0) {
     container.innerHTML = '<p style="color: var(--muted);">No hay cartas con stock bajo</p>';
     return;
   }
@@ -145,7 +148,7 @@ async function loadInventory() {
 function renderInventoryTable(cards) {
   const container = document.getElementById('inventoryTable');
 
-  if (cards.length === 0) {
+  if (!cards || cards.length === 0) {
     container.innerHTML = '<p style="padding: 2rem; text-align: center;">No se encontraron cartas</p>';
     return;
   }
@@ -246,12 +249,22 @@ async function loadSales() {
     }
 
     const response = await AuthService.makeAuthenticatedRequest(url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
 
-    renderSalesTable(data.sales);
+    if (data.success && data.sales) {
+      renderSalesTable(data.sales);
+    } else {
+      renderSalesTable([]);
+    }
   } catch (error) {
     console.error('Error cargando ventas:', error);
     alert('Error al cargar ventas');
+    renderSalesTable([]);
   } finally {
     showLoading(false);
   }
@@ -260,7 +273,7 @@ async function loadSales() {
 function renderSalesTable(sales) {
   const container = document.getElementById('salesTable');
 
-  if (sales.length === 0) {
+  if (!sales || sales.length === 0) {
     container.innerHTML = '<p style="padding: 2rem; text-align: center;">No se encontraron ventas</p>';
     return;
   }
@@ -277,15 +290,18 @@ function renderSalesTable(sales) {
         </tr>
       </thead>
       <tbody>
-        ${sales.map(sale => `
-          <tr>
-            <td>${sale.transaction_id}</td>
-            <td>${new Date(sale.created_at).toLocaleString()}</td>
-            <td>${sale.items.length} item(s)</td>
-            <td>$${parseFloat(sale.grand_total).toFixed(2)}</td>
-            <td>${sale.card_type || 'N/A'} ****${sale.last_four_digits || '****'}</td>
-          </tr>
-        `).join('')}
+        ${sales.map(sale => {
+          const items = Array.isArray(sale.items) ? sale.items : [];
+          return `
+            <tr>
+              <td>${sale.transaction_id}</td>
+              <td>${new Date(sale.created_at).toLocaleString()}</td>
+              <td>${items.length} item(s)</td>
+              <td>$${parseFloat(sale.grand_total).toFixed(2)}</td>
+              <td>${sale.card_type || 'N/A'} ****${sale.last_four_digits || '****'}</td>
+            </tr>
+          `;
+        }).join('')}
       </tbody>
     </table>
   `;
@@ -297,10 +313,15 @@ async function loadUsers() {
     const response = await AuthService.makeAuthenticatedRequest(`${API_BASE}/admin/users`);
     const data = await response.json();
 
-    renderUsersTable(data.users);
+    if (data.success && data.users) {
+      renderUsersTable(data.users);
+    } else {
+      renderUsersTable([]);
+    }
   } catch (error) {
     console.error('Error cargando usuarios:', error);
     alert('Error al cargar usuarios');
+    renderUsersTable([]);
   } finally {
     showLoading(false);
   }
@@ -309,7 +330,7 @@ async function loadUsers() {
 function renderUsersTable(users) {
   const container = document.getElementById('usersTable');
 
-  if (users.length === 0) {
+  if (!users || users.length === 0) {
     container.innerHTML = '<p style="padding: 2rem; text-align: center;">No hay usuarios registrados</p>';
     return;
   }

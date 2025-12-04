@@ -1,4 +1,4 @@
-import { AuthService } from './core/services/authService.js';
+import { AuthService } from '../core/services/authService.js';
 
 function updateNavigation() {
   const authLink = document.getElementById('authLink');
@@ -13,9 +13,16 @@ function updateNavigation() {
     
     const userMenu = document.createElement('div');
     userMenu.className = 'user-menu';
+    
+    const isInPagesFolder = window.location.pathname.includes('/pages/');
+    const adminLink = isInPagesFolder ? 'admin.html' : 'pages/admin.html';
+    const profileLink = isInPagesFolder ? 'profile.html' : 'pages/profile.html';
+    
     userMenu.innerHTML = `
-      <span class="user-greeting">Hola, ${user.full_name}</span>
-      ${user.role === 'admin' ? '<a href="pages/admin.html" class="nav-admin">Panel Admin</a>' : ''}
+      ${user.role === 'admin' 
+        ? `<a href="${adminLink}" class="nav-link">Panel Admin</a>` 
+        : `<a href="${profileLink}" class="nav-link">Mi Perfil</a>`
+      }
       <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
     `;
 
@@ -24,9 +31,7 @@ function updateNavigation() {
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       if (confirm('¿Deseas cerrar sesión?')) {
         await AuthService.logout();
-        window.location.href = window.location.pathname.includes('/pages/') 
-          ? '../index.html' 
-          : 'index.html';
+        window.location.href = isInPagesFolder ? '../index.html' : 'index.html';
       }
     });
   }

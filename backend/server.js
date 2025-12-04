@@ -17,6 +17,98 @@ app.use('/api/auth', createAuthRoutes(sql));
 
 app.use('/api/admin', authMiddleware(sql), requireAdmin, createAdminRoutes(sql));
 
+app.get('/api/user/purchases', authMiddleware(sql), async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const purchases = await sql`
+      SELECT 
+        t.id,
+        t.transaction_id,
+        t.total_amount,
+        t.tax_amount,
+        t.grand_total,
+        t.payment_status,
+        t.card_type,
+        t.last_four_digits,
+        t.created_at,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'card_name', ti.card_name,
+              'price', ti.price,
+              'quantity', ti.quantity
+            )
+          ) FILTER (WHERE ti.id IS NOT NULL),
+          '[]'
+        ) as items
+      FROM transactions t
+      LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
+      GROUP BY t.id
+      ORDER BY t.created_at DESC
+    `;
+
+    res.json({
+      success: true,
+      purchases: purchases || []
+    });
+  } catch (error) {
+    console.error('Error obteniendo compras del usuario:', error);
+    res.status(500).json({ 
+      error: 'Error al obtener historial de compras',
+      details: error.message 
+    });
+  }
+});
+
+app.get('/api/user/purchases/:transactionId', authMiddleware(sql), async (req, res) => {
+  try {
+    const { transactionId } = req.params;
+
+    const purchases = await sql`
+      SELECT 
+        t.id,
+        t.transaction_id,
+        t.total_amount,
+        t.tax_amount,
+        t.grand_total,
+        t.payment_status,
+        t.card_type,
+        t.last_four_digits,
+        t.created_at,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'card_name', ti.card_name,
+              'price', ti.price,
+              'quantity', ti.quantity
+            )
+          ) FILTER (WHERE ti.id IS NOT NULL),
+          '[]'
+        ) as items
+      FROM transactions t
+      LEFT JOIN transaction_items ti ON t.id = ti.transaction_id
+      WHERE t.transaction_id = ${transactionId}
+      GROUP BY t.id
+    `;
+
+    if (purchases.length === 0) {
+      return res.status(404).json({ error: 'Compra no encontrada' });
+    }
+
+    res.json({
+      success: true,
+      purchase: purchases[0]
+    });
+  } catch (error) {
+    console.error('Error obteniendo detalle de compra:', error);
+    res.status(500).json({ 
+      error: 'Error al obtener detalle de compra',
+      details: error.message 
+    });
+  }
+});
+
 app.get('/api/cards', async (req, res) => {
   try {
     const { type, rarity, set, name, inStock } = req.query;

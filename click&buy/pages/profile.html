@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy - Mi Perfil</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <link rel="stylesheet" href="../assets/css/profile.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy</div>
+      <nav class="menu">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="about.html">Acerca</a>
+        <a href="carrito.html">Carrito</a>
+        <a href="login.html" id="authLink">Iniciar Sesión</a>
+      </nav>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container section">
+    <h1>Mi Perfil</h1>
+
+    <div class="profile-container">
+      <div class="profile-info section-box">
+        <h2>Información Personal</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Nombre:</label>
+            <p id="userName">-</p>
+          </div>
+          <div class="info-item">
+            <label>Email:</label>
+            <p id="userEmail">-</p>
+          </div>
+          <div class="info-item">
+            <label>Rol:</label>
+            <p id="userRole">-</p>
+          </div>
+          <div class="info-item">
+            <label>Miembro desde:</label>
+            <p id="userSince">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-stats section-box">
+        <h2>Estadísticas de Compras</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🛒</div>
+            <div class="stat-info">
+              <h3>Total de Compras</h3>
+              <p class="stat-value" id="totalPurchases">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💳</div>
+            <div class="stat-info">
+              <h3>Total Gastado</h3>
+              <p class="stat-value" id="totalSpent">$0.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="purchase-history section-box">
+        <h2>Historial de Compras</h2>
+        <div id="purchaseHistoryTable" class="data-table"></div>
+      </div>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+      <div class="spinner"></div>
+      <p>Cargando...</p>
+    </div>
+  </main>
+
+  <div id="purchaseDetailModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2>Detalle de Compra</h2>
+      <p><strong>ID de Transacción:</strong> <span id="modalTransactionId"></span></p>
+      <p><strong>Fecha:</strong> <span id="modalTransactionDate"></span></p>
+      
+      <h3>Artículos:</h3>
+      <div id="modalItems"></div>
+      
+      <div class="modal-totals">
+        <p><strong>Subtotal:</strong> <span id="modalSubtotal"></span></p>
+        <p><strong>IVA (19%):</strong> <span id="modalTax"></span></p>
+        <p style="font-size: 1.2rem;"><strong>Total:</strong> <span id="modalTotal"></span></p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="closeModalBtn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Click & Buy</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main-profile.js"></script>
+  <script src="../src/shared/theme.js"></script>
+  <script type="module" src="../src/shared/navAuth.js"></script>
+</body>
+</html>
