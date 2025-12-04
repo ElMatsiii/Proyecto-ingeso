@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!AuthService.requireAuth()) return;
   if (!AuthService.requireAdmin()) return;
 
-  const user = AuthService.getUser();
-  document.getElementById('userGreeting').textContent = `Bienvenido, ${user.full_name}`;
-
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await AuthService.logout();
     window.location.href = '../index.html';

@@ -4,7 +4,6 @@ function updateNavigation() {
   const authLink = document.getElementById('authLink');
   
   if (!authLink) {
-    console.warn('authLink no encontrado en la navegación');
     return;
   }
 
