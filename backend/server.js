@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { neon } from '@neondatabase/serverless';
+import { createAuthRoutes, createAdminRoutes } from './routes/auth.js';
+import { authMiddleware, requireAdmin } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -10,6 +12,10 @@ const sql = neon(process.env.DATABASE_URL);
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/auth', createAuthRoutes(sql));
+
+app.use('/api/admin', authMiddleware(sql), requireAdmin, createAdminRoutes(sql));
 
 app.get('/api/cards', async (req, res) => {
   try {
@@ -129,7 +135,6 @@ app.post('/api/transactions', async (req, res) => {
     
     console.log('Cartas encontradas en BD:', cards.length);
     
-    // Validar stock ESTRICTAMENTE
     const stockErrors = [];
     for (const item of items) {
       const card = cards.find(c => c.id === item.id);
@@ -141,13 +146,11 @@ app.post('/api/transactions', async (req, res) => {
       
       console.log(`Verificando ${card.name}: stock=${card.stock}`);
       
-      // VALIDACIÓN ESTRICTA: debe tener stock > 0
       if (!card.stock || card.stock < 1) {
         stockErrors.push(`"${card.name}" no tiene stock disponible (stock: ${card.stock || 0})`);
       }
     }
     
-    // Si hay errores de stock, rechazar la transacción
     if (stockErrors.length > 0) {
       console.error('Errores de stock:', stockErrors);
       return res.status(400).json({
@@ -158,8 +161,6 @@ app.post('/api/transactions', async (req, res) => {
     
     console.log('Stock verificado correctamente');
     
-    // Iniciar transacción
-    // 1. Crear registro de transacción
     const transaction = await sql`
       INSERT INTO transactions (
         transaction_id, total_amount, tax_amount, grand_total,
@@ -175,9 +176,7 @@ app.post('/api/transactions', async (req, res) => {
     const transId = transaction[0].id;
     console.log('Transacción creada con ID:', transId);
     
-    // 2. Crear items de transacción y reducir stock
     for (const item of items) {
-      // Insertar item
       await sql`
         INSERT INTO transaction_items (
           transaction_id, card_id, card_name, price, quantity
@@ -187,7 +186,6 @@ app.post('/api/transactions', async (req, res) => {
         )
       `;
       
-      // Reducir stock CON VALIDACIÓN
       const result = await sql`
         UPDATE cards 
         SET stock = stock - 1 
@@ -297,11 +295,9 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

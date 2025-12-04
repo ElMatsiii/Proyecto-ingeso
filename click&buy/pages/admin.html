@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click & Buy - Panel de Administración</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">Click & Buy - Admin</div>
+      <nav class="menu">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="about.html">Acerca</a>
+        <a href="carrito.html">Carrito</a>
+        <a href="login.html" id="authLink">Iniciar Sesión</a>
+      </nav>
+      <div class="user-info">
+        <span id="userGreeting"></span>
+        <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+      </div>
+      <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Cambiar tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container section">
+    <h1>Panel de Administración</h1>
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="inventory">Inventario</button>
+      <button class="tab-btn" data-tab="sales">Ventas</button>
+      <button class="tab-btn" data-tab="users">Usuarios</button>
+    </div>
+
+    <div class="tab-content active" id="dashboard">
+      <h2>Estadísticas Generales</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <h3>Total de Cartas</h3>
+            <p class="stat-value" id="totalCards">-</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <h3>Cartas en Stock</h3>
+            <p class="stat-value" id="cardsInStock">-</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">❌</div>
+          <div class="stat-info">
+            <h3>Sin Stock</h3>
+            <p class="stat-value" id="cardsOutStock">-</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <h3>Ventas Totales</h3>
+            <p class="stat-value" id="totalSales">-</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">💵</div>
+          <div class="stat-info">
+            <h3>Ingresos Totales</h3>
+            <p class="stat-value" id="totalRevenue">-</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <h3>Clientes</h3>
+            <p class="stat-value" id="totalCustomers">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-sections">
+        <div class="section-box">
+          <h3>Ventas Recientes</h3>
+          <div id="recentSalesList" class="data-list"></div>
+        </div>
+
+        <div class="section-box">
+          <h3>Stock Bajo (≤5 unidades)</h3>
+          <div id="lowStockList" class="data-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="inventory">
+      <h2>Gestión de Inventario</h2>
+      
+      <div class="filters">
+        <input type="text" id="searchCard" class="input" placeholder="Buscar carta...">
+        <select id="filterStock" class="input">
+          <option value="">Todos</option>
+          <option value="inStock">Con stock</option>
+          <option value="lowStock">Stock bajo (≤5)</option>
+          <option value="noStock">Sin stock</option>
+        </select>
+        <button class="btn" id="applyInventoryFilters">Buscar</button>
+      </div>
+
+      <div id="inventoryTable" class="data-table"></div>
+      <div id="inventoryPagination" class="pagination-controls"></div>
+    </div>
+
+    <div class="tab-content" id="sales">
+      <h2>Historial de Ventas</h2>
+      
+      <div class="filters">
+        <input type="date" id="startDate" class="input">
+        <input type="date" id="endDate" class="input">
+        <button class="btn" id="filterSales">Filtrar</button>
+        <button class="btn" id="clearSalesFilter">Limpiar</button>
+      </div>
+
+      <div id="salesTable" class="data-table"></div>
+    </div>
+
+    <div class="tab-content" id="users">
+      <h2>Gestión de Usuarios</h2>
+      <div id="usersTable" class="data-table"></div>
+    </div>
+
+    <div id="loading" class="loading" style="display: none;">
+      <div class="spinner"></div>
+      <p>Cargando...</p>
+    </div>
+  </main>
+
+  <div id="editStockModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2>Actualizar Stock</h2>
+      <p><strong>Carta:</strong> <span id="modalCardName"></span></p>
+      <p><strong>Stock actual:</strong> <span id="modalCurrentStock"></span></p>
+      
+      <div class="form-group">
+        <label for="newStock">Nuevo Stock:</label>
+        <input type="number" id="newStock" class="input" min="0" required>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancelStockBtn">Cancelar</button>
+        <button class="btn btn-primary" id="confirmStockBtn">Actualizar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Click & Buy - Panel de Administración</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main-admin.js"></script>
+  <script src="../src/shared/theme.js"></script>
+  <script type="module" src="src/shared/navAuth.js"></script>
+</body>
+</html>
